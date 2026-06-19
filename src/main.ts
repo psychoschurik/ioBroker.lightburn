@@ -1,5 +1,5 @@
 import * as dgram from 'node:dgram';
-import * as utils from '@iobroker/adapter-core';
+import { Adapter, type AdapterOptions } from '@iobroker/adapter-core';
 
 const RESPONSE_OK = 'OK';
 const RESPONSE_BUSY_OR_FAILED = '!';
@@ -21,14 +21,15 @@ interface PendingCommand {
     timer: NodeJS.Timeout;
 }
 
-class LightBurn extends utils.Adapter {
+class LightBurn extends Adapter {
+    declare config: LightBurnConfig;
     private socket: dgram.Socket | null = null;
     private pendingCommand: PendingCommand | null = null;
     private commandQueue: Promise<void> = Promise.resolve();
     private pollTimer: NodeJS.Timeout | null = null;
     private isUnloading = false;
 
-    public constructor(options: Partial<utils.AdapterOptions> = {}) {
+    public constructor(options: Partial<AdapterOptions> = {}) {
         super({
             ...options,
             name: 'lightburn',
@@ -37,10 +38,6 @@ class LightBurn extends utils.Adapter {
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
         this.on('unload', this.onUnload.bind(this));
-    }
-
-    private get lightBurnConfig(): LightBurnConfig {
-        return this.config as LightBurnConfig;
     }
 
     private async onReady(): Promise<void> {
@@ -80,10 +77,7 @@ class LightBurn extends utils.Adapter {
         }
     }
 
-    private async onStateChange(
-        id: string,
-        state: ioBroker.State | null | undefined,
-    ): Promise<void> {
+    private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
         if (!state || state.ack) {
             return;
         }
@@ -156,8 +150,8 @@ class LightBurn extends utils.Adapter {
 
     private openSocket(): Promise<void> {
         return new Promise((resolve, reject) => {
-            const bindAddress = this.normalizeHost(this.lightBurnConfig.bindAddress, '0.0.0.0');
-            const responsePort = this.normalizePort(this.lightBurnConfig.responsePort, 19841);
+            const bindAddress = this.normalizeHost(this.config.bindAddress, '0.0.0.0');
+            const responsePort = this.normalizePort(this.config.responsePort, 19841);
             let settled = false;
 
             const done = (): void => {
@@ -247,9 +241,9 @@ class LightBurn extends utils.Adapter {
                 return;
             }
 
-            const host = this.normalizeHost(this.lightBurnConfig.host, '127.0.0.1');
-            const commandPort = this.normalizePort(this.lightBurnConfig.commandPort, 19840);
-            const timeoutMs = this.normalizeTimeout(this.lightBurnConfig.timeoutMs, 2000);
+            const host = this.normalizeHost(this.config.host, '127.0.0.1');
+            const commandPort = this.normalizePort(this.config.commandPort, 19840);
+            const timeoutMs = this.normalizeTimeout(this.config.timeoutMs, 2000);
             const payload = Buffer.from(command, 'utf8');
 
             const timer = setTimeout(() => {
@@ -294,10 +288,7 @@ class LightBurn extends utils.Adapter {
         this.log.info(`LightBurn command ${prefix} returned ${response}`);
     }
 
-    private async executeRawCommand(
-        stateId: string,
-        value: ioBroker.StateValue | undefined,
-    ): Promise<void> {
+    private async executeRawCommand(stateId: string, value: ioBroker.StateValue | undefined): Promise<void> {
         const command = this.normalizeText(value);
 
         if (!command) {
@@ -366,7 +357,7 @@ class LightBurn extends utils.Adapter {
     }
 
     private startPolling(): void {
-        const intervalSeconds = Number(this.lightBurnConfig.pollInterval);
+        const intervalSeconds = Number(this.config.pollInterval);
 
         if (!Number.isFinite(intervalSeconds) || intervalSeconds <= 0) {
             this.log.info('LightBurn status polling is disabled');
@@ -391,20 +382,23 @@ class LightBurn extends utils.Adapter {
         }
     }
 
-    private normalizeText(value: unknown): string {
+    private normalizeText(value: ioBroker.StateValue | undefined): string {
         if (value === null || value === undefined) {
             return '';
         }
+        if (typeof value === 'object') {
+            return JSON.stringify(value);
+        }
 
-        return String(value).trim();
+        return value.toString().trim();
     }
 
-    private normalizeHost(value: unknown, fallback: string): string {
+    private normalizeHost(value: string | undefined, fallback: string): string {
         const host = this.normalizeText(value);
         return host || fallback;
     }
 
-    private normalizePort(value: unknown, fallback: number): number {
+    private normalizePort(value: string | number | undefined, fallback: number): number {
         const port = Number(value);
 
         if (!Number.isInteger(port) || port < 1 || port > 65535) {
@@ -430,8 +424,7 @@ class LightBurn extends utils.Adapter {
 }
 
 if (require.main !== module) {
-    module.exports = (options: Partial<utils.AdapterOptions> | undefined): LightBurn =>
-        new LightBurn(options);
+    module.exports = (options: Partial<AdapterOptions> | undefined): LightBurn => new LightBurn(options);
 } else {
     new LightBurn();
 }
