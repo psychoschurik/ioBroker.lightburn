@@ -1,0 +1,305 @@
+{
+  "common": {
+    "name": "lightburn",
+    "version": "0.0.1",
+    "news": {
+      "0.0.1": {
+        "en": "Initial release with LightBurn UDP automation commands",
+        "de": "Erste Version mit LightBurn UDP-Automation-Befehlen",
+        "ru": "Initial release with LightBurn UDP automation commands",
+        "pt": "Initial release with LightBurn UDP automation commands",
+        "nl": "Initial release with LightBurn UDP automation commands",
+        "fr": "Initial release with LightBurn UDP automation commands",
+        "it": "Initial release with LightBurn UDP automation commands",
+        "es": "Initial release with LightBurn UDP automation commands",
+        "pl": "Initial release with LightBurn UDP automation commands",
+        "uk": "Initial release with LightBurn UDP automation commands",
+        "zh-cn": "Initial release with LightBurn UDP automation commands"
+      }
+    },
+    "titleLang": {
+      "en": "LightBurn",
+      "de": "LightBurn",
+      "ru": "LightBurn",
+      "pt": "LightBurn",
+      "nl": "LightBurn",
+      "fr": "LightBurn",
+      "it": "LightBurn",
+      "es": "LightBurn",
+      "pl": "LightBurn",
+      "uk": "LightBurn",
+      "zh-cn": "LightBurn"
+    },
+    "desc": {
+      "en": "Controls LightBurn through its UDP automation interface",
+      "de": "Steuert LightBurn ueber die UDP-Automation-Schnittstelle",
+      "ru": "Controls LightBurn through its UDP automation interface",
+      "pt": "Controls LightBurn through its UDP automation interface",
+      "nl": "Controls LightBurn through its UDP automation interface",
+      "fr": "Controls LightBurn through its UDP automation interface",
+      "it": "Controls LightBurn through its UDP automation interface",
+      "es": "Controls LightBurn through its UDP automation interface",
+      "pl": "Controls LightBurn through its UDP automation interface",
+      "uk": "Controls LightBurn through its UDP automation interface",
+      "zh-cn": "Controls LightBurn through its UDP automation interface"
+    },
+    "authors": [
+      "Friebe"
+    ],
+    "keywords": [
+      "lightburn",
+      "laser",
+      "udp",
+      "automation"
+    ],
+    "licenseInformation": {
+      "type": "free",
+      "license": "MIT"
+    },
+    "platform": "Javascript/Node.js",
+    "icon": "lightburn.svg",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/friebe/ioBroker.lightburn/main/admin/lightburn.svg",
+    "readme": "https://github.com/friebe/ioBroker.lightburn/blob/main/README.md",
+    "loglevel": "info",
+    "tier": 3,
+    "mode": "daemon",
+    "type": "general",
+    "compact": true,
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=6.0.11"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=7.0.23"
+      }
+    ]
+  },
+  "native": {
+    "host": "127.0.0.1",
+    "commandPort": 19840,
+    "responsePort": 19841,
+    "bindAddress": "0.0.0.0",
+    "timeoutMs": 2000,
+    "pollInterval": 30
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "name": "Connection to LightBurn",
+        "type": "boolean",
+        "role": "indicator.connected",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.busy",
+      "type": "state",
+      "common": {
+        "name": "Laser busy",
+        "type": "boolean",
+        "role": "indicator",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.lastCommand",
+      "type": "state",
+      "common": {
+        "name": "Last UDP command",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false,
+        "def": ""
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.lastResponse",
+      "type": "state",
+      "common": {
+        "name": "Last LightBurn response",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false,
+        "def": ""
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.lastError",
+      "type": "state",
+      "common": {
+        "name": "Last error",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false,
+        "def": ""
+      },
+      "native": {}
+    },
+    {
+      "_id": "control",
+      "type": "channel",
+      "common": {
+        "name": "Control"
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.start",
+      "type": "state",
+      "common": {
+        "name": "Start current LightBurn job",
+        "type": "boolean",
+        "role": "button",
+        "read": true,
+        "write": true,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.status",
+      "type": "state",
+      "common": {
+        "name": "Check laser status",
+        "type": "boolean",
+        "role": "button",
+        "read": true,
+        "write": true,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.ping",
+      "type": "state",
+      "common": {
+        "name": "Ping LightBurn",
+        "type": "boolean",
+        "role": "button",
+        "read": true,
+        "write": true,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.close",
+      "type": "state",
+      "common": {
+        "name": "Close LightBurn",
+        "type": "boolean",
+        "role": "button",
+        "read": true,
+        "write": true,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.forceClose",
+      "type": "state",
+      "common": {
+        "name": "Force close LightBurn",
+        "type": "boolean",
+        "role": "button",
+        "read": true,
+        "write": true,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.loadFile",
+      "type": "state",
+      "common": {
+        "name": "Load file",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": true,
+        "def": ""
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.forceLoad",
+      "type": "state",
+      "common": {
+        "name": "Force load file",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": true,
+        "def": ""
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.importFile",
+      "type": "state",
+      "common": {
+        "name": "Import file",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": true,
+        "def": ""
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.laser",
+      "type": "state",
+      "common": {
+        "name": "Select laser by name",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": true,
+        "def": ""
+      },
+      "native": {}
+    },
+    {
+      "_id": "control.command",
+      "type": "state",
+      "common": {
+        "name": "Raw UDP command",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": true,
+        "def": ""
+      },
+      "native": {}
+    }
+  ]
+}

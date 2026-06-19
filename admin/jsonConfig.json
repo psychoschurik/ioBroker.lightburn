@@ -1,0 +1,77 @@
+{
+  "i18n": false,
+  "type": "panel",
+  "items": {
+    "host": {
+      "type": "text",
+      "label": "LightBurn host/IP",
+      "help": "Use 127.0.0.1 if ioBroker runs on the same computer as LightBurn.",
+      "default": "127.0.0.1",
+      "newLine": true,
+      "xs": 12,
+      "sm": 12,
+      "md": 6,
+      "lg": 4
+    },
+    "commandPort": {
+      "type": "number",
+      "label": "UDP command port",
+      "help": "LightBurn default: 19840",
+      "default": 19840,
+      "min": 1,
+      "max": 65535,
+      "newLine": true,
+      "xs": 12,
+      "sm": 6,
+      "md": 4,
+      "lg": 3
+    },
+    "responsePort": {
+      "type": "number",
+      "label": "UDP response port",
+      "help": "LightBurn default: 19841",
+      "default": 19841,
+      "min": 1,
+      "max": 65535,
+      "xs": 12,
+      "sm": 6,
+      "md": 4,
+      "lg": 3
+    },
+    "bindAddress": {
+      "type": "text",
+      "label": "Local bind address",
+      "help": "Use 0.0.0.0 for all local interfaces.",
+      "default": "0.0.0.0",
+      "newLine": true,
+      "xs": 12,
+      "sm": 12,
+      "md": 6,
+      "lg": 4
+    },
+    "timeoutMs": {
+      "type": "number",
+      "label": "Command timeout (ms)",
+      "default": 2000,
+      "min": 250,
+      "max": 60000,
+      "newLine": true,
+      "xs": 12,
+      "sm": 6,
+      "md": 4,
+      "lg": 3
+    },
+    "pollInterval": {
+      "type": "number",
+      "label": "Status polling interval (s)",
+      "help": "Set to 0 to disable automatic polling.",
+      "default": 30,
+      "min": 0,
+      "max": 3600,
+      "xs": 12,
+      "sm": 6,
+      "md": 4,
+      "lg": 3
+    }
+  }
+}
