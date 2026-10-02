@@ -1,8 +1,86 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="LightBurn adapter icon">
-  <rect width="256" height="256" rx="36" fill="#20242b"/>
-  <path d="M54 172h148v18H54z" fill="#f4c542"/>
-  <path d="M84 70h88l22 102H62z" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
-  <path d="M128 78v88" stroke="#ff5c35" stroke-width="12" stroke-linecap="round"/>
-  <path d="M104 140l24 28 24-28" fill="none" stroke="#ff5c35" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="128" cy="56" r="16" fill="#f4c542"/>
+  <defs>
+    <linearGradient id="bg" x1="32" x2="224" y1="20" y2="236" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#06152a"/>
+      <stop offset="1" stop-color="#0f1d35"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="44" x2="216" y1="40" y2="216" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#18d8ff"/>
+      <stop offset=".48" stop-color="#218cff"/>
+      <stop offset=".72" stop-color="#ff8a25"/>
+      <stop offset="1" stop-color="#ff3151"/>
+    </linearGradient>
+    <linearGradient id="head" x1="96" x2="160" y1="48" y2="104" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#27d7ff"/>
+      <stop offset="1" stop-color="#1773ff"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="128" x2="128" y1="100" y2="174" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff7d4"/>
+      <stop offset=".34" stop-color="#ff7b22"/>
+      <stop offset="1" stop-color="#ff2847"/>
+    </linearGradient>
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="256" height="256" rx="44" fill="url(#bg)"/>
+  <path
+    d="M52 126a76 76 0 0 1 126-57"
+    fill="none"
+    stroke="#18d8ff"
+    stroke-linecap="round"
+    stroke-width="18"
+  />
+  <path
+    d="M196 82a76 76 0 0 1 13 93"
+    fill="none"
+    stroke="#ff8a25"
+    stroke-linecap="round"
+    stroke-width="18"
+  />
+  <path
+    d="M192 198a76 76 0 0 1-59 20"
+    fill="none"
+    opacity=".34"
+    stroke="#ff3151"
+    stroke-linecap="round"
+    stroke-width="18"
+  />
+  <path
+    d="M94 214a76 76 0 0 1-38-43"
+    fill="none"
+    opacity=".28"
+    stroke="#6b7a90"
+    stroke-linecap="round"
+    stroke-width="18"
+  />
+
+  <path d="M96 58a10 10 0 0 1 10-10h44a10 10 0 0 1 10 10v22H96z" fill="url(#head)"/>
+  <path d="M103 80h50v15a9 9 0 0 1-9 9h-32a9 9 0 0 1-9-9z" fill="#f5f9ff"/>
+  <path d="M116 104h24l-7 22h-10z" fill="#dce7f3"/>
+
+  <path d="M128 123v48" filter="url(#softGlow)" stroke="url(#beam)" stroke-linecap="round" stroke-width="8"/>
+  <path
+    d="M73 174h66l18 18h33"
+    fill="none"
+    filter="url(#softGlow)"
+    stroke="url(#beam)"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="9"
+  />
+  <circle cx="128" cy="172" r="8" fill="#fff4c7" filter="url(#softGlow)"/>
+  <path
+    d="M111 154l-13-10m34 4v-16m23 24 14-9m-70 36-17 8m89 11 17 10"
+    opacity=".9"
+    stroke="#ff7b22"
+    stroke-linecap="round"
+    stroke-width="5"
+  />
+  <path d="M68 168h122" opacity=".16" stroke="url(#ring)" stroke-linecap="round" stroke-width="4"/>
 </svg>

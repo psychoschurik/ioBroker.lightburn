@@ -1,77 +1,206 @@
 {
-  "i18n": false,
-  "type": "panel",
-  "items": {
-    "host": {
-      "type": "text",
-      "label": "LightBurn host/IP",
-      "help": "Use 127.0.0.1 if ioBroker runs on the same computer as LightBurn.",
-      "default": "127.0.0.1",
-      "newLine": true,
-      "xs": 12,
-      "sm": 12,
-      "md": 6,
-      "lg": 4
-    },
-    "commandPort": {
-      "type": "number",
-      "label": "UDP command port",
-      "help": "LightBurn default: 19840",
-      "default": 19840,
-      "min": 1,
-      "max": 65535,
-      "newLine": true,
-      "xs": 12,
-      "sm": 6,
-      "md": 4,
-      "lg": 3
-    },
-    "responsePort": {
-      "type": "number",
-      "label": "UDP response port",
-      "help": "LightBurn default: 19841",
-      "default": 19841,
-      "min": 1,
-      "max": 65535,
-      "xs": 12,
-      "sm": 6,
-      "md": 4,
-      "lg": 3
-    },
-    "bindAddress": {
-      "type": "text",
-      "label": "Local bind address",
-      "help": "Use 0.0.0.0 for all local interfaces.",
-      "default": "0.0.0.0",
-      "newLine": true,
-      "xs": 12,
-      "sm": 12,
-      "md": 6,
-      "lg": 4
-    },
-    "timeoutMs": {
-      "type": "number",
-      "label": "Command timeout (ms)",
-      "default": 2000,
-      "min": 250,
-      "max": 60000,
-      "newLine": true,
-      "xs": 12,
-      "sm": 6,
-      "md": 4,
-      "lg": 3
-    },
-    "pollInterval": {
-      "type": "number",
-      "label": "Status polling interval (s)",
-      "help": "Set to 0 to disable automatic polling.",
-      "default": 30,
-      "min": 0,
-      "max": 3600,
-      "xs": 12,
-      "sm": 6,
-      "md": 4,
-      "lg": 3
+    "i18n": false,
+    "type": "panel",
+    "items": {
+        "restHost": {
+            "type": "text",
+            "label": "LightBurn REST host/IP",
+            "help": "Use 127.0.0.1 if ioBroker runs on the same computer as LightBurn. Enable Settings > Extensions > Allow API Access From Network in LightBurn for remote access.",
+            "default": "127.0.0.1",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 4
+        },
+        "restPort": {
+            "type": "number",
+            "label": "REST API port",
+            "help": "LightBurn uses fixed port 19520.",
+            "default": 19520,
+            "min": 1,
+            "max": 65535,
+            "xs": 12,
+            "sm": 6,
+            "md": 3,
+            "lg": 2
+        },
+        "applicationName": {
+            "type": "text",
+            "label": "Pairing application name",
+            "default": "ioBroker.lightburn",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 4
+        },
+        "restSecret": {
+            "type": "password",
+            "label": "REST API secret",
+            "help": "Use the pairing button below when ioBroker runs on the LightBurn computer, or paste a secret obtained by local pairing.",
+            "default": "",
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 4
+        },
+        "pairInfo": {
+            "type": "staticText",
+            "text": "Direct pairing works only when this adapter instance runs on the same computer as LightBurn. Click the button and approve the LightBurn dialog within 30 seconds.",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 9,
+            "lg": 8
+        },
+        "pairButton": {
+            "type": "setState",
+            "label": "Pair with LightBurn",
+            "id": "lightburn.%INSTANCE%.control.pair",
+            "val": true,
+            "ack": false,
+            "okText": "Pairing started. Confirm the LightBurn dialog within 30 seconds.",
+            "variant": "contained",
+            "color": "primary",
+            "xs": 12,
+            "sm": 6,
+            "md": 3,
+            "lg": 2
+        },
+        "pairHelperInfo": {
+            "type": "staticText",
+            "text": "If ioBroker runs on another computer, download the Windows helper, run it on the LightBurn computer, approve the LightBurn dialog, and paste the copied secret into REST API secret.",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 9,
+            "lg": 8
+        },
+        "pairHelperDownload": {
+            "type": "staticLink",
+            "label": "Download Windows pairing helper",
+            "href": "/adapter/lightburn/pair-lightburn.cmd",
+            "target": "_blank",
+            "button": true,
+            "variant": "outlined",
+            "color": "primary",
+            "xs": 12,
+            "sm": 6,
+            "md": 3,
+            "lg": 2
+        },
+        "requestTimeoutMs": {
+            "type": "number",
+            "label": "REST request timeout (ms)",
+            "default": 5000,
+            "min": 250,
+            "max": 60000,
+            "newLine": true,
+            "xs": 12,
+            "sm": 6,
+            "md": 3,
+            "lg": 2
+        },
+        "pollInterval": {
+            "type": "number",
+            "label": "State polling interval (s)",
+            "help": "Polls /api/events/poll for job progress and position. Set to 0 to disable automatic polling.",
+            "default": 2,
+            "min": 0,
+            "max": 3600,
+            "xs": 12,
+            "sm": 6,
+            "md": 3,
+            "lg": 2
+        },
+        "enableProjectPolling": {
+            "type": "checkbox",
+            "label": "Poll project, layers, and cuts",
+            "default": true,
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 4
+        },
+        "projectPollInterval": {
+            "type": "number",
+            "label": "Project polling interval (s)",
+            "default": 60,
+            "min": 0,
+            "max": 3600,
+            "xs": 12,
+            "sm": 6,
+            "md": 3,
+            "lg": 2
+        },
+        "enableUdpControl": {
+            "type": "checkbox",
+            "label": "Enable legacy UDP control commands",
+            "help": "Required only for START/PAUSE/CLOSE/FORCECLOSE/raw UDP commands. REST monitoring does not need this.",
+            "default": false,
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 4
+        },
+        "udpHost": {
+            "type": "text",
+            "label": "UDP host/IP",
+            "help": "Leave empty to use the REST host.",
+            "default": "",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 4
+        },
+        "udpCommandPort": {
+            "type": "number",
+            "label": "UDP command port",
+            "help": "LightBurn default: 19840",
+            "default": 19840,
+            "min": 1,
+            "max": 65535,
+            "xs": 12,
+            "sm": 6,
+            "md": 3,
+            "lg": 2
+        },
+        "udpResponsePort": {
+            "type": "number",
+            "label": "UDP response port",
+            "help": "LightBurn default: 19841",
+            "default": 19841,
+            "min": 1,
+            "max": 65535,
+            "xs": 12,
+            "sm": 6,
+            "md": 3,
+            "lg": 2
+        },
+        "udpBindAddress": {
+            "type": "text",
+            "label": "UDP local bind address",
+            "default": "0.0.0.0",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 4
+        },
+        "udpTimeoutMs": {
+            "type": "number",
+            "label": "UDP command timeout (ms)",
+            "default": 2000,
+            "min": 250,
+            "max": 60000,
+            "xs": 12,
+            "sm": 6,
+            "md": 3,
+            "lg": 2
+        }
     }
-  }
 }

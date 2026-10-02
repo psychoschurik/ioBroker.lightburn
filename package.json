@@ -1,57 +1,59 @@
 {
-  "name": "iobroker.lightburn",
-  "version": "0.0.1",
-  "description": "ioBroker adapter for LightBurn UDP automation",
-  "author": {
-    "name": "Friebe"
-  },
-  "homepage": "https://github.com/friebe/ioBroker.lightburn",
-  "license": "MIT",
-  "keywords": [
-    "iobroker",
-    "lightburn",
-    "laser",
-    "udp",
-    "automation"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/friebe/ioBroker.lightburn.git"
-  },
-  "engines": {
-    "node": ">= 20"
-  },
-  "dependencies": {
-    "@iobroker/adapter-core": "^3.3.2"
-  },
-  "devDependencies": {
-    "@iobroker/adapter-dev": "^1.5.0",
-    "@iobroker/eslint-config": "^2.2.0",
-    "@iobroker/testing": "^5.2.2",
-    "@types/iobroker": "npm:@iobroker/types@^7.0.7",
-    "@types/node": "^20.19.24",
-    "eslint": "^9.39.1",
-    "mocha": "^11.7.5",
-    "prettier": "^3.6.2",
-    "typescript": "~5.9.3"
-  },
-  "main": "build/main.js",
-  "files": [
-    "admin/",
-    "build/",
-    "io-package.json",
-    "LICENSE",
-    "README.md"
-  ],
-  "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "lint": "eslint -c eslint.config.mjs",
-    "prettier": "prettier --check .",
-    "test:package": "mocha test/package --exit",
-    "test": "npm run build && npm run lint && npm run prettier && npm run test:package"
-  },
-  "bugs": {
-    "url": "https://github.com/friebe/ioBroker.lightburn/issues"
-  },
-  "readmeFilename": "README.md"
+    "name": "iobroker.lightburn",
+    "version": "0.0.7",
+    "description": "ioBroker adapter for LightBurn REST API monitoring and automation",
+    "author": {
+        "name": "Friebe"
+    },
+    "homepage": "https://github.com/friebe/ioBroker.lightburn",
+    "license": "MIT",
+    "keywords": [
+        "iobroker",
+        "lightburn",
+        "laser",
+        "rest",
+        "api",
+        "automation"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/friebe/ioBroker.lightburn.git"
+    },
+    "engines": {
+        "node": ">= 20"
+    },
+    "dependencies": {
+        "@iobroker/adapter-core": "^3.3.2"
+    },
+    "devDependencies": {
+        "@iobroker/adapter-dev": "^1.5.0",
+        "@iobroker/eslint-config": "^2.2.0",
+        "@iobroker/testing": "^5.2.2",
+        "@types/iobroker": "npm:@iobroker/types@^7.0.7",
+        "@types/node": "^20.19.24",
+        "eslint": "^9.39.1",
+        "mocha": "^11.7.5",
+        "prettier": "^3.6.2",
+        "typescript": "~5.9.3"
+    },
+    "main": "build/main.js",
+    "files": [
+        "admin/",
+        "build/",
+        "io-package.json",
+        "LICENSE",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "tsc -p tsconfig.build.json",
+        "build:devices": "npm --prefix src-devices run build && node tools/copy-devices.mjs",
+        "lint": "eslint -c eslint.config.mjs",
+        "prettier": "prettier --check .",
+        "test:package": "mocha test/package --exit",
+        "test": "npm run build && npm run lint && npm run prettier && npm run test:package"
+    },
+    "bugs": {
+        "url": "https://github.com/friebe/ioBroker.lightburn/issues"
+    },
+    "readmeFilename": "README.md"
 }

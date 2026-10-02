@@ -6,10 +6,9 @@ export default [
         languageOptions: {
             parserOptions: {
                 projectService: {
-                    allowDefaultProject: ['*.mjs'],
+                    allowDefaultProject: ['*.mjs', 'tools/*.mjs'],
                 },
                 tsconfigRootDir: import.meta.dirname,
-                project: './tsconfig.json',
             },
         },
     },
@@ -20,6 +19,7 @@ export default [
             'test/**/*',
             'build/**/*',
             'tmp/**/*',
+            'src-devices/**/*',
             '.**/*',
         ],
     },

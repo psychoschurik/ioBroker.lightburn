@@ -1,305 +1,1118 @@
 {
-  "common": {
-    "name": "lightburn",
-    "version": "0.0.1",
-    "news": {
-      "0.0.1": {
-        "en": "Initial release with LightBurn UDP automation commands",
-        "de": "Erste Version mit LightBurn UDP-Automation-Befehlen",
-        "ru": "Initial release with LightBurn UDP automation commands",
-        "pt": "Initial release with LightBurn UDP automation commands",
-        "nl": "Initial release with LightBurn UDP automation commands",
-        "fr": "Initial release with LightBurn UDP automation commands",
-        "it": "Initial release with LightBurn UDP automation commands",
-        "es": "Initial release with LightBurn UDP automation commands",
-        "pl": "Initial release with LightBurn UDP automation commands",
-        "uk": "Initial release with LightBurn UDP automation commands",
-        "zh-cn": "Initial release with LightBurn UDP automation commands"
-      }
+    "common": {
+        "name": "lightburn",
+        "version": "0.0.7",
+        "news": {
+            "0.0.7": {
+                "en": "Refreshed the adapter icon with a modern laser progress-ring logo",
+                "de": "Adapter-Icon mit modernem Laser-Fortschrittsring-Logo erneuert",
+                "ru": "Refreshed the adapter icon with a modern laser progress-ring logo",
+                "pt": "Refreshed the adapter icon with a modern laser progress-ring logo",
+                "nl": "Refreshed the adapter icon with a modern laser progress-ring logo",
+                "fr": "Refreshed the adapter icon with a modern laser progress-ring logo",
+                "it": "Refreshed the adapter icon with a modern laser progress-ring logo",
+                "es": "Refreshed the adapter icon with a modern laser progress-ring logo",
+                "pl": "Refreshed the adapter icon with a modern laser progress-ring logo",
+                "uk": "Refreshed the adapter icon with a modern laser progress-ring logo",
+                "zh-cn": "Refreshed the adapter icon with a modern laser progress-ring logo"
+            },
+            "0.0.6": {
+                "en": "Fixed the LightBurn devices widget so 2x2 renders as a square tile",
+                "de": "LightBurn-Devices-Widget korrigiert, damit 2x2 als quadratische Kachel gerendert wird",
+                "ru": "Fixed the LightBurn devices widget so 2x2 renders as a square tile",
+                "pt": "Fixed the LightBurn devices widget so 2x2 renders as a square tile",
+                "nl": "Fixed the LightBurn devices widget so 2x2 renders as a square tile",
+                "fr": "Fixed the LightBurn devices widget so 2x2 renders as a square tile",
+                "it": "Fixed the LightBurn devices widget so 2x2 renders as a square tile",
+                "es": "Fixed the LightBurn devices widget so 2x2 renders as a square tile",
+                "pl": "Fixed the LightBurn devices widget so 2x2 renders as a square tile",
+                "uk": "Fixed the LightBurn devices widget so 2x2 renders as a square tile",
+                "zh-cn": "Fixed the LightBurn devices widget so 2x2 renders as a square tile"
+            },
+            "0.0.5": {
+                "en": "Added explicit 2x2 widget size support and a Pause button backed by control.pause",
+                "de": "Explizite 2x2-Widget-Groesse und Pause-Knopf ueber control.pause hinzugefuegt",
+                "ru": "Added explicit 2x2 widget size support and a Pause button backed by control.pause",
+                "pt": "Added explicit 2x2 widget size support and a Pause button backed by control.pause",
+                "nl": "Added explicit 2x2 widget size support and a Pause button backed by control.pause",
+                "fr": "Added explicit 2x2 widget size support and a Pause button backed by control.pause",
+                "it": "Added explicit 2x2 widget size support and a Pause button backed by control.pause",
+                "es": "Added explicit 2x2 widget size support and a Pause button backed by control.pause",
+                "pl": "Added explicit 2x2 widget size support and a Pause button backed by control.pause",
+                "uk": "Added explicit 2x2 widget size support and a Pause button backed by control.pause",
+                "zh-cn": "Added explicit 2x2 widget size support and a Pause button backed by control.pause"
+            },
+            "0.0.4": {
+                "en": "Added an ioBroker.devices status widget for device name, job progress, remaining runtime, and open file",
+                "de": "ioBroker.devices Status-Widget fuer Device Name, Job-Fortschritt, Restlaufzeit und geoeffnete Datei hinzugefuegt",
+                "ru": "Added an ioBroker.devices status widget for device name, job progress, remaining runtime, and open file",
+                "pt": "Added an ioBroker.devices status widget for device name, job progress, remaining runtime, and open file",
+                "nl": "Added an ioBroker.devices status widget for device name, job progress, remaining runtime, and open file",
+                "fr": "Added an ioBroker.devices status widget for device name, job progress, remaining runtime, and open file",
+                "it": "Added an ioBroker.devices status widget for device name, job progress, remaining runtime, and open file",
+                "es": "Added an ioBroker.devices status widget for device name, job progress, remaining runtime, and open file",
+                "pl": "Added an ioBroker.devices status widget for device name, job progress, remaining runtime, and open file",
+                "uk": "Added an ioBroker.devices status widget for device name, job progress, remaining runtime, and open file",
+                "zh-cn": "Added an ioBroker.devices status widget for device name, job progress, remaining runtime, and open file"
+            },
+            "0.0.3": {
+                "en": "Moved the Windows pairing helper into the adapter admin files and added a download link in the configuration",
+                "de": "Windows-Pairing-Helfer in die Adapter-Admin-Dateien verschoben und Download-Link in der Konfiguration ergaenzt",
+                "ru": "Moved the Windows pairing helper into the adapter admin files and added a download link in the configuration",
+                "pt": "Moved the Windows pairing helper into the adapter admin files and added a download link in the configuration",
+                "nl": "Moved the Windows pairing helper into the adapter admin files and added a download link in the configuration",
+                "fr": "Moved the Windows pairing helper into the adapter admin files and added a download link in the configuration",
+                "it": "Moved the Windows pairing helper into the adapter admin files and added a download link in the configuration",
+                "es": "Moved the Windows pairing helper into the adapter admin files and added a download link in the configuration",
+                "pl": "Moved the Windows pairing helper into the adapter admin files and added a download link in the configuration",
+                "uk": "Moved the Windows pairing helper into the adapter admin files and added a download link in the configuration",
+                "zh-cn": "Moved the Windows pairing helper into the adapter admin files and added a download link in the configuration"
+            },
+            "0.0.2": {
+                "en": "Added an admin pairing button and a Windows pairing helper",
+                "de": "Admin-Pairing-Knopf und Windows-Pairing-Helfer hinzugefuegt",
+                "ru": "Added an admin pairing button and a Windows pairing helper",
+                "pt": "Added an admin pairing button and a Windows pairing helper",
+                "nl": "Added an admin pairing button and a Windows pairing helper",
+                "fr": "Added an admin pairing button and a Windows pairing helper",
+                "it": "Added an admin pairing button and a Windows pairing helper",
+                "es": "Added an admin pairing button and a Windows pairing helper",
+                "pl": "Added an admin pairing button and a Windows pairing helper",
+                "uk": "Added an admin pairing button and a Windows pairing helper",
+                "zh-cn": "Added an admin pairing button and a Windows pairing helper"
+            },
+            "0.0.1": {
+                "en": "Initial release with LightBurn REST API monitoring and optional legacy UDP commands",
+                "de": "Erste Version mit LightBurn REST-API-Monitoring und optionalen Legacy-UDP-Befehlen",
+                "ru": "Initial release with LightBurn REST API monitoring and optional legacy UDP commands",
+                "pt": "Initial release with LightBurn REST API monitoring and optional legacy UDP commands",
+                "nl": "Initial release with LightBurn REST API monitoring and optional legacy UDP commands",
+                "fr": "Initial release with LightBurn REST API monitoring and optional legacy UDP commands",
+                "it": "Initial release with LightBurn REST API monitoring and optional legacy UDP commands",
+                "es": "Initial release with LightBurn REST API monitoring and optional legacy UDP commands",
+                "pl": "Initial release with LightBurn REST API monitoring and optional legacy UDP commands",
+                "uk": "Initial release with LightBurn REST API monitoring and optional legacy UDP commands",
+                "zh-cn": "Initial release with LightBurn REST API monitoring and optional legacy UDP commands"
+            }
+        },
+        "titleLang": {
+            "en": "LightBurn",
+            "de": "LightBurn",
+            "ru": "LightBurn",
+            "pt": "LightBurn",
+            "nl": "LightBurn",
+            "fr": "LightBurn",
+            "it": "LightBurn",
+            "es": "LightBurn",
+            "pl": "LightBurn",
+            "uk": "LightBurn",
+            "zh-cn": "LightBurn"
+        },
+        "desc": {
+            "en": "Reads LightBurn REST API state and can optionally send legacy UDP control commands",
+            "de": "Liest LightBurn REST-API-Statusdaten und kann optional Legacy-UDP-Steuerbefehle senden",
+            "ru": "Reads LightBurn REST API state and can optionally send legacy UDP control commands",
+            "pt": "Reads LightBurn REST API state and can optionally send legacy UDP control commands",
+            "nl": "Reads LightBurn REST API state and can optionally send legacy UDP control commands",
+            "fr": "Reads LightBurn REST API state and can optionally send legacy UDP control commands",
+            "it": "Reads LightBurn REST API state and can optionally send legacy UDP control commands",
+            "es": "Reads LightBurn REST API state and can optionally send legacy UDP control commands",
+            "pl": "Reads LightBurn REST API state and can optionally send legacy UDP control commands",
+            "uk": "Reads LightBurn REST API state and can optionally send legacy UDP control commands",
+            "zh-cn": "Reads LightBurn REST API state and can optionally send legacy UDP control commands"
+        },
+        "authors": ["Friebe"],
+        "keywords": ["lightburn", "laser", "rest", "api", "udp", "automation"],
+        "licenseInformation": {
+            "type": "free",
+            "license": "MIT"
+        },
+        "platform": "Javascript/Node.js",
+        "icon": "lightburn.svg",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/friebe/ioBroker.lightburn/main/admin/lightburn.svg",
+        "readme": "https://github.com/friebe/ioBroker.lightburn/blob/main/README.md",
+        "loglevel": "info",
+        "tier": 3,
+        "mode": "daemon",
+        "type": "general",
+        "compact": true,
+        "connectionType": "local",
+        "dataSource": "poll",
+        "adminUI": {
+            "config": "json"
+        },
+        "encryptedNative": ["restSecret"],
+        "dependencies": [
+            {
+                "js-controller": ">=6.0.11"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=7.0.23"
+            }
+        ],
+        "deviceWidgets": {
+            "url": "customDevices.js",
+            "components": [
+                {
+                    "name": "LightBurnStatusComponent",
+                    "label": {
+                        "en": "LightBurn status",
+                        "de": "LightBurn Status",
+                        "ru": "LightBurn status",
+                        "pt": "LightBurn status",
+                        "nl": "LightBurn status",
+                        "fr": "LightBurn status",
+                        "it": "LightBurn status",
+                        "es": "LightBurn status",
+                        "pl": "LightBurn status",
+                        "uk": "LightBurn status",
+                        "zh-cn": "LightBurn status"
+                    },
+                    "description": {
+                        "en": "Shows the active LightBurn device, progress, remaining runtime, and open file",
+                        "de": "Zeigt aktives LightBurn-Device, Fortschritt, Restlaufzeit und geoeffnete Datei",
+                        "ru": "Shows the active LightBurn device, progress, remaining runtime, and open file",
+                        "pt": "Shows the active LightBurn device, progress, remaining runtime, and open file",
+                        "nl": "Shows the active LightBurn device, progress, remaining runtime, and open file",
+                        "fr": "Shows the active LightBurn device, progress, remaining runtime, and open file",
+                        "it": "Shows the active LightBurn device, progress, remaining runtime, and open file",
+                        "es": "Shows the active LightBurn device, progress, remaining runtime, and open file",
+                        "pl": "Shows the active LightBurn device, progress, remaining runtime, and open file",
+                        "uk": "Shows the active LightBurn device, progress, remaining runtime, and open file",
+                        "zh-cn": "Shows the active LightBurn device, progress, remaining runtime, and open file"
+                    },
+                    "icon": "lightburn.svg"
+                }
+            ]
+        }
     },
-    "titleLang": {
-      "en": "LightBurn",
-      "de": "LightBurn",
-      "ru": "LightBurn",
-      "pt": "LightBurn",
-      "nl": "LightBurn",
-      "fr": "LightBurn",
-      "it": "LightBurn",
-      "es": "LightBurn",
-      "pl": "LightBurn",
-      "uk": "LightBurn",
-      "zh-cn": "LightBurn"
+    "native": {
+        "restHost": "127.0.0.1",
+        "restPort": 19520,
+        "restSecret": "",
+        "applicationName": "ioBroker.lightburn",
+        "requestTimeoutMs": 5000,
+        "pollInterval": 2,
+        "enableProjectPolling": true,
+        "projectPollInterval": 60,
+        "enableUdpControl": false,
+        "udpHost": "",
+        "udpCommandPort": 19840,
+        "udpResponsePort": 19841,
+        "udpBindAddress": "0.0.0.0",
+        "udpTimeoutMs": 2000
     },
-    "desc": {
-      "en": "Controls LightBurn through its UDP automation interface",
-      "de": "Steuert LightBurn ueber die UDP-Automation-Schnittstelle",
-      "ru": "Controls LightBurn through its UDP automation interface",
-      "pt": "Controls LightBurn through its UDP automation interface",
-      "nl": "Controls LightBurn through its UDP automation interface",
-      "fr": "Controls LightBurn through its UDP automation interface",
-      "it": "Controls LightBurn through its UDP automation interface",
-      "es": "Controls LightBurn through its UDP automation interface",
-      "pl": "Controls LightBurn through its UDP automation interface",
-      "uk": "Controls LightBurn through its UDP automation interface",
-      "zh-cn": "Controls LightBurn through its UDP automation interface"
-    },
-    "authors": [
-      "Friebe"
-    ],
-    "keywords": [
-      "lightburn",
-      "laser",
-      "udp",
-      "automation"
-    ],
-    "licenseInformation": {
-      "type": "free",
-      "license": "MIT"
-    },
-    "platform": "Javascript/Node.js",
-    "icon": "lightburn.svg",
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/friebe/ioBroker.lightburn/main/admin/lightburn.svg",
-    "readme": "https://github.com/friebe/ioBroker.lightburn/blob/main/README.md",
-    "loglevel": "info",
-    "tier": 3,
-    "mode": "daemon",
-    "type": "general",
-    "compact": true,
-    "adminUI": {
-      "config": "json"
-    },
-    "dependencies": [
-      {
-        "js-controller": ">=6.0.11"
-      }
-    ],
-    "globalDependencies": [
-      {
-        "admin": ">=7.0.23"
-      }
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "name": "Machine connected",
+                "type": "boolean",
+                "role": "indicator.connected",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.apiConnection",
+            "type": "state",
+            "common": {
+                "name": "REST API reachable",
+                "type": "boolean",
+                "role": "indicator.reachable",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.apiPaired",
+            "type": "state",
+            "common": {
+                "name": "REST API paired",
+                "type": "boolean",
+                "role": "indicator",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.busy",
+            "type": "state",
+            "common": {
+                "name": "Job busy",
+                "type": "boolean",
+                "role": "indicator.working",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.lastEndpoint",
+            "type": "state",
+            "common": {
+                "name": "Last REST endpoint",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.lastUdpCommand",
+            "type": "state",
+            "common": {
+                "name": "Last UDP command",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.lastUdpResponse",
+            "type": "state",
+            "common": {
+                "name": "Last UDP response",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.lastError",
+            "type": "state",
+            "common": {
+                "name": "Last error",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "control",
+            "type": "channel",
+            "common": {
+                "name": "Control"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.pair",
+            "type": "state",
+            "common": {
+                "name": "Pair with LightBurn REST API",
+                "type": "boolean",
+                "role": "button",
+                "read": true,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.refresh",
+            "type": "state",
+            "common": {
+                "name": "Refresh machine state",
+                "type": "boolean",
+                "role": "button",
+                "read": true,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.refreshProject",
+            "type": "state",
+            "common": {
+                "name": "Refresh project data",
+                "type": "boolean",
+                "role": "button",
+                "read": true,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.uploadFile",
+            "type": "state",
+            "common": {
+                "name": "Upload file into current project",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": true,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.openFile",
+            "type": "state",
+            "common": {
+                "name": "Open file as new project",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": true,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.start",
+            "type": "state",
+            "common": {
+                "name": "Start current job (legacy UDP)",
+                "type": "boolean",
+                "role": "button",
+                "read": true,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.pause",
+            "type": "state",
+            "common": {
+                "name": "Pause current job (legacy UDP)",
+                "type": "boolean",
+                "role": "button",
+                "read": true,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.close",
+            "type": "state",
+            "common": {
+                "name": "Close LightBurn (legacy UDP)",
+                "type": "boolean",
+                "role": "button",
+                "read": true,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.forceClose",
+            "type": "state",
+            "common": {
+                "name": "Force close LightBurn (legacy UDP)",
+                "type": "boolean",
+                "role": "button",
+                "read": true,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.udpCommand",
+            "type": "state",
+            "common": {
+                "name": "Raw legacy UDP command",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": true,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "job",
+            "type": "channel",
+            "common": {
+                "name": "Job"
+            },
+            "native": {}
+        },
+        {
+            "_id": "job.state",
+            "type": "state",
+            "common": {
+                "name": "Job state",
+                "type": "string",
+                "role": "state",
+                "read": true,
+                "write": false,
+                "def": "idle",
+                "states": {
+                    "idle": "idle",
+                    "running": "running",
+                    "paused": "paused"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "job.running",
+            "type": "state",
+            "common": {
+                "name": "Job running",
+                "type": "boolean",
+                "role": "indicator.working",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "job.paused",
+            "type": "state",
+            "common": {
+                "name": "Job paused",
+                "type": "boolean",
+                "role": "indicator",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "job.progressPercent",
+            "type": "state",
+            "common": {
+                "name": "Job progress",
+                "type": "number",
+                "role": "value.progress",
+                "unit": "%",
+                "min": 0,
+                "max": 100,
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "job.startedAt",
+            "type": "state",
+            "common": {
+                "name": "Job started at",
+                "type": "string",
+                "role": "date",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "job.elapsedSeconds",
+            "type": "state",
+            "common": {
+                "name": "Job elapsed time",
+                "type": "number",
+                "role": "value.interval",
+                "unit": "s",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "job.estimatedTotalSeconds",
+            "type": "state",
+            "common": {
+                "name": "Estimated total job time",
+                "type": "number",
+                "role": "value.interval",
+                "unit": "s",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "job.remainingSeconds",
+            "type": "state",
+            "common": {
+                "name": "Estimated remaining job time",
+                "type": "number",
+                "role": "value.interval",
+                "unit": "s",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "device",
+            "type": "channel",
+            "common": {
+                "name": "Device"
+            },
+            "native": {}
+        },
+        {
+            "_id": "device.connected",
+            "type": "state",
+            "common": {
+                "name": "Device connected",
+                "type": "boolean",
+                "role": "indicator.connected",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "device.name",
+            "type": "state",
+            "common": {
+                "name": "Device name",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "device.supportsZ",
+            "type": "state",
+            "common": {
+                "name": "Device supports Z axis",
+                "type": "boolean",
+                "role": "indicator",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "device.supportsOverrides",
+            "type": "state",
+            "common": {
+                "name": "Device supports overrides",
+                "type": "boolean",
+                "role": "indicator",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "position",
+            "type": "channel",
+            "common": {
+                "name": "Position"
+            },
+            "native": {}
+        },
+        {
+            "_id": "position.machine",
+            "type": "channel",
+            "common": {
+                "name": "Machine position"
+            },
+            "native": {}
+        },
+        {
+            "_id": "position.workpiece",
+            "type": "channel",
+            "common": {
+                "name": "Workpiece position"
+            },
+            "native": {}
+        },
+        {
+            "_id": "position.machine.x",
+            "type": "state",
+            "common": {
+                "name": "Machine X",
+                "type": "number",
+                "role": "value",
+                "unit": "mm",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "position.machine.y",
+            "type": "state",
+            "common": {
+                "name": "Machine Y",
+                "type": "number",
+                "role": "value",
+                "unit": "mm",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "position.machine.z",
+            "type": "state",
+            "common": {
+                "name": "Machine Z",
+                "type": "number",
+                "role": "value",
+                "unit": "mm",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "position.workpiece.x",
+            "type": "state",
+            "common": {
+                "name": "Workpiece X",
+                "type": "number",
+                "role": "value",
+                "unit": "mm",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "position.workpiece.y",
+            "type": "state",
+            "common": {
+                "name": "Workpiece Y",
+                "type": "number",
+                "role": "value",
+                "unit": "mm",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "position.workpiece.z",
+            "type": "state",
+            "common": {
+                "name": "Workpiece Z",
+                "type": "number",
+                "role": "value",
+                "unit": "mm",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "overrides",
+            "type": "channel",
+            "common": {
+                "name": "Overrides"
+            },
+            "native": {}
+        },
+        {
+            "_id": "overrides.speedPercent",
+            "type": "state",
+            "common": {
+                "name": "Speed override",
+                "type": "number",
+                "role": "value",
+                "unit": "%",
+                "read": true,
+                "write": false,
+                "def": 100
+            },
+            "native": {}
+        },
+        {
+            "_id": "overrides.powerPercent",
+            "type": "state",
+            "common": {
+                "name": "Power override",
+                "type": "number",
+                "role": "value",
+                "unit": "%",
+                "read": true,
+                "write": false,
+                "def": 100
+            },
+            "native": {}
+        },
+        {
+            "_id": "aux",
+            "type": "channel",
+            "common": {
+                "name": "Auxiliary state"
+            },
+            "native": {}
+        },
+        {
+            "_id": "aux.spindleOn",
+            "type": "state",
+            "common": {
+                "name": "Spindle on",
+                "type": "boolean",
+                "role": "switch",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "aux.spindleRpm",
+            "type": "state",
+            "common": {
+                "name": "Spindle RPM",
+                "type": "number",
+                "role": "value",
+                "unit": "rpm",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "aux.coolantOn",
+            "type": "state",
+            "common": {
+                "name": "Coolant on",
+                "type": "boolean",
+                "role": "switch",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "aux.vacuumOn",
+            "type": "state",
+            "common": {
+                "name": "Vacuum on",
+                "type": "boolean",
+                "role": "switch",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "settings",
+            "type": "channel",
+            "common": {
+                "name": "Jog settings"
+            },
+            "native": {}
+        },
+        {
+            "_id": "settings.xyDistance",
+            "type": "state",
+            "common": {
+                "name": "XY jog distance",
+                "type": "number",
+                "role": "value",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "settings.zDistance",
+            "type": "state",
+            "common": {
+                "name": "Z jog distance",
+                "type": "number",
+                "role": "value",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "settings.xySpeed",
+            "type": "state",
+            "common": {
+                "name": "XY jog speed",
+                "type": "number",
+                "role": "value.speed",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "settings.zSpeed",
+            "type": "state",
+            "common": {
+                "name": "Z jog speed",
+                "type": "number",
+                "role": "value.speed",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "settings.units",
+            "type": "state",
+            "common": {
+                "name": "Jog units",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "project",
+            "type": "channel",
+            "common": {
+                "name": "Project"
+            },
+            "native": {}
+        },
+        {
+            "_id": "project.filename",
+            "type": "state",
+            "common": {
+                "name": "Project filename",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "project.modified",
+            "type": "state",
+            "common": {
+                "name": "Project modified",
+                "type": "boolean",
+                "role": "indicator",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "project.shapeCount",
+            "type": "state",
+            "common": {
+                "name": "Project shape count",
+                "type": "number",
+                "role": "value",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "project.deviceName",
+            "type": "state",
+            "common": {
+                "name": "Project device name",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "project.units",
+            "type": "channel",
+            "common": {
+                "name": "Project units"
+            },
+            "native": {}
+        },
+        {
+            "_id": "project.units.distance",
+            "type": "state",
+            "common": {
+                "name": "Project distance units",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "project.units.speed",
+            "type": "state",
+            "common": {
+                "name": "Project speed units",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "project.raw",
+            "type": "state",
+            "common": {
+                "name": "Raw project JSON",
+                "type": "string",
+                "role": "json",
+                "read": true,
+                "write": false,
+                "def": "{}"
+            },
+            "native": {}
+        },
+        {
+            "_id": "layers",
+            "type": "channel",
+            "common": {
+                "name": "Layers"
+            },
+            "native": {}
+        },
+        {
+            "_id": "layers.raw",
+            "type": "state",
+            "common": {
+                "name": "Raw layers JSON",
+                "type": "string",
+                "role": "json",
+                "read": true,
+                "write": false,
+                "def": "{}"
+            },
+            "native": {}
+        },
+        {
+            "_id": "cuts",
+            "type": "channel",
+            "common": {
+                "name": "Cuts"
+            },
+            "native": {}
+        },
+        {
+            "_id": "cuts.raw",
+            "type": "state",
+            "common": {
+                "name": "Raw cuts JSON",
+                "type": "string",
+                "role": "json",
+                "read": true,
+                "write": false,
+                "def": "{}"
+            },
+            "native": {}
+        },
+        {
+            "_id": "upload",
+            "type": "channel",
+            "common": {
+                "name": "Upload"
+            },
+            "native": {}
+        },
+        {
+            "_id": "upload.lastFile",
+            "type": "state",
+            "common": {
+                "name": "Last uploaded/opened file",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "upload.lastMode",
+            "type": "state",
+            "common": {
+                "name": "Last upload mode",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "upload.lastResponse",
+            "type": "state",
+            "common": {
+                "name": "Last upload response JSON",
+                "type": "string",
+                "role": "json",
+                "read": true,
+                "write": false,
+                "def": "{}"
+            },
+            "native": {}
+        }
     ]
-  },
-  "native": {
-    "host": "127.0.0.1",
-    "commandPort": 19840,
-    "responsePort": 19841,
-    "bindAddress": "0.0.0.0",
-    "timeoutMs": 2000,
-    "pollInterval": 30
-  },
-  "objects": [],
-  "instanceObjects": [
-    {
-      "_id": "info",
-      "type": "channel",
-      "common": {
-        "name": "Information"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.connection",
-      "type": "state",
-      "common": {
-        "name": "Connection to LightBurn",
-        "type": "boolean",
-        "role": "indicator.connected",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.busy",
-      "type": "state",
-      "common": {
-        "name": "Laser busy",
-        "type": "boolean",
-        "role": "indicator",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.lastCommand",
-      "type": "state",
-      "common": {
-        "name": "Last UDP command",
-        "type": "string",
-        "role": "text",
-        "read": true,
-        "write": false,
-        "def": ""
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.lastResponse",
-      "type": "state",
-      "common": {
-        "name": "Last LightBurn response",
-        "type": "string",
-        "role": "text",
-        "read": true,
-        "write": false,
-        "def": ""
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.lastError",
-      "type": "state",
-      "common": {
-        "name": "Last error",
-        "type": "string",
-        "role": "text",
-        "read": true,
-        "write": false,
-        "def": ""
-      },
-      "native": {}
-    },
-    {
-      "_id": "control",
-      "type": "channel",
-      "common": {
-        "name": "Control"
-      },
-      "native": {}
-    },
-    {
-      "_id": "control.start",
-      "type": "state",
-      "common": {
-        "name": "Start current LightBurn job",
-        "type": "boolean",
-        "role": "button",
-        "read": true,
-        "write": true,
-        "def": false
-      },
-      "native": {}
-    },
-    {
-      "_id": "control.status",
-      "type": "state",
-      "common": {
-        "name": "Check laser status",
-        "type": "boolean",
-        "role": "button",
-        "read": true,
-        "write": true,
-        "def": false
-      },
-      "native": {}
-    },
-    {
-      "_id": "control.ping",
-      "type": "state",
-      "common": {
-        "name": "Ping LightBurn",
-        "type": "boolean",
-        "role": "button",
-        "read": true,
-        "write": true,
-        "def": false
-      },
-      "native": {}
-    },
-    {
-      "_id": "control.close",
-      "type": "state",
-      "common": {
-        "name": "Close LightBurn",
-        "type": "boolean",
-        "role": "button",
-        "read": true,
-        "write": true,
-        "def": false
-      },
-      "native": {}
-    },
-    {
-      "_id": "control.forceClose",
-      "type": "state",
-      "common": {
-        "name": "Force close LightBurn",
-        "type": "boolean",
-        "role": "button",
-        "read": true,
-        "write": true,
-        "def": false
-      },
-      "native": {}
-    },
-    {
-      "_id": "control.loadFile",
-      "type": "state",
-      "common": {
-        "name": "Load file",
-        "type": "string",
-        "role": "text",
-        "read": true,
-        "write": true,
-        "def": ""
-      },
-      "native": {}
-    },
-    {
-      "_id": "control.forceLoad",
-      "type": "state",
-      "common": {
-        "name": "Force load file",
-        "type": "string",
-        "role": "text",
-        "read": true,
-        "write": true,
-        "def": ""
-      },
-      "native": {}
-    },
-    {
-      "_id": "control.importFile",
-      "type": "state",
-      "common": {
-        "name": "Import file",
-        "type": "string",
-        "role": "text",
-        "read": true,
-        "write": true,
-        "def": ""
-      },
-      "native": {}
-    },
-    {
-      "_id": "control.laser",
-      "type": "state",
-      "common": {
-        "name": "Select laser by name",
-        "type": "string",
-        "role": "text",
-        "read": true,
-        "write": true,
-        "def": ""
-      },
-      "native": {}
-    },
-    {
-      "_id": "control.command",
-      "type": "state",
-      "common": {
-        "name": "Raw UDP command",
-        "type": "string",
-        "role": "text",
-        "read": true,
-        "write": true,
-        "def": ""
-      },
-      "native": {}
-    }
-  ]
 }
