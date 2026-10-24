@@ -174,6 +174,36 @@ preview, LightBurn's own remaining-time estimate, or direct start/stop/pause job
 control. Camera streams must be exposed separately, for example by using an IP
 camera or an MJPEG/RTSP bridge for a USB camera.
 
+## Network discovery
+
+The Admin configuration has **Live-Status**, **Einstellungen** (settings) and
+**Netzwerksuche** (network discovery) tabs. Live status shows API reachability,
+machine connection, the latest job, progress, estimated times, position and overrides.
+The progress slider is read-only. `info.lastUpdate` records the last successful
+machine-state poll in UTC; when the API is unreachable or the adapter is stopped,
+the displayed measurements are historical. Manual refresh buttons request fresh
+status/project data without starting or pausing a job.
+
+In the network discovery tab, enter a private IPv4 subnet such as `192.168.23.0/24`,
+save the settings, then click **Search for LightBurn** while the adapter is running.
+With an empty subnet, the adapter scans the `/24` containing the configured REST
+IPv4 address. Hostnames and loopback addresses require an explicit private subnet.
+Prefixes `/24` through `/32` are supported, with at most 16 simultaneous requests
+and a 1.5-second timeout per address (roughly 24 seconds for a `/24`). The configured
+REST port is used, normally `19520`.
+
+The scan reads only the public `GET /` page, without credentials or pairing.
+Results containing the LightBurn name on a successful page are labelled
+`lightburn`; other HTTP responses are labelled `http-service` and remain
+unconfirmed. This is a discovery hint, not proof of product identity or a connected
+laser. Firewalls or disabled network API access can prevent detection.
+
+Results appear in the settings and in `discovery.results` (JSON).
+`discovery.status` contains the summary or error, and `discovery.running` indicates
+an active scan. Writing `true` to `control.scanNetwork` also starts a scan.
+Duplicate requests are ignored while scanning. Copy the desired IP to `restHost`
+and save; discovery does not change the connection or pairing secret automatically.
+
 ## Safety
 
 Remote monitoring and automation are not safety systems. Keep LightBurn and the

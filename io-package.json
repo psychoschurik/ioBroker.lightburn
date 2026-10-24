@@ -163,7 +163,7 @@
         ],
         "globalDependencies": [
             {
-                "admin": ">=7.0.23"
+                "admin": ">=7.1.0"
             }
         ],
         "deviceWidgets": {
@@ -216,7 +216,8 @@
         "udpCommandPort": 19840,
         "udpResponsePort": 19841,
         "udpBindAddress": "0.0.0.0",
-        "udpTimeoutMs": 2000
+        "udpTimeoutMs": 2000,
+        "discoverySubnet": ""
     },
     "objects": [],
     "instanceObjects": [
@@ -1153,6 +1154,79 @@
                 "read": true,
                 "write": false,
                 "def": "{}"
+            },
+            "native": {}
+        },
+        {
+            "_id": "discovery",
+            "type": "channel",
+            "common": {
+                "name": "Network discovery"
+            },
+            "native": {}
+        },
+        {
+            "_id": "control.scanNetwork",
+            "type": "state",
+            "common": {
+                "name": "Scan network for LightBurn",
+                "type": "boolean",
+                "role": "button",
+                "read": true,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "discovery.running",
+            "type": "state",
+            "common": {
+                "name": "Network scan running",
+                "type": "boolean",
+                "role": "indicator",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "discovery.status",
+            "type": "state",
+            "common": {
+                "name": "Network scan status and results",
+                "type": "string",
+                "role": "text",
+                "read": true,
+                "write": false,
+                "def": "Not scanned yet"
+            },
+            "native": {}
+        },
+        {
+            "_id": "discovery.results",
+            "type": "state",
+            "common": {
+                "name": "Discovered HTTP services",
+                "type": "string",
+                "role": "json",
+                "read": true,
+                "write": false,
+                "def": "[]"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.lastUpdate",
+            "type": "state",
+            "common": {
+                "name": "Last successful machine state update (UTC)",
+                "type": "string",
+                "role": "date",
+                "read": true,
+                "write": false,
+                "def": ""
             },
             "native": {}
         }

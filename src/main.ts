@@ -3,6 +3,7 @@ import * as dgram from 'node:dgram';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import * as utils from '@iobroker/adapter-core';
+import { discoveryHosts, scanNetwork } from './discovery';
 
 const REST_PORT = 19520;
 const UDP_COMMAND_PORT = 19840;
@@ -15,6 +16,7 @@ type JobStateValue = 'idle' | 'running' | 'paused';
 type RestCapability = 'state' | 'project' | 'upload';
 
 interface LightBurnConfig {
+    discoverySubnet?: string;
     restHost?: string;
     restPort?: number | string;
     restSecret?: string;
@@ -116,6 +118,7 @@ interface ProjectSnapshot {
 type RestRequestBody = string | Buffer;
 
 class LightBurn extends utils.Adapter {
+    private discoveryController: AbortController | null = null;
     private udpSocket: dgram.Socket | null = null;
     private pendingUdpCommand: PendingUdpCommand | null = null;
     private udpCommandQueue: Promise<void> = Promise.resolve();
@@ -148,6 +151,8 @@ class LightBurn extends utils.Adapter {
 
     private async onReady(): Promise<void> {
         this.restSecret = this.normalizeText(this.lightBurnConfig.restSecret);
+        await this.setStateAsync('discovery.running', false, true);
+        await this.setStateAsync('control.scanNetwork', false, true);
 
         await this.setStateAsync('info.connection', false, true);
         await this.setStateAsync('info.apiConnection', false, true);
@@ -175,6 +180,7 @@ class LightBurn extends utils.Adapter {
     private onUnload(callback: () => void): void {
         try {
             this.isUnloading = true;
+            this.discoveryController?.abort();
 
             if (this.pollTimer) {
                 clearInterval(this.pollTimer);
@@ -213,6 +219,12 @@ class LightBurn extends utils.Adapter {
 
         try {
             switch (stateId) {
+                case 'control.scanNetwork':
+                    if (state.val === true) {
+                        await this.setStateAsync(stateId, false, true);
+                        await this.discoverNetwork();
+                    }
+                    break;
                 case 'control.pair':
                     if (state.val === true) {
                         await this.pairRestApi();
@@ -291,6 +303,55 @@ class LightBurn extends utils.Adapter {
         }
     }
 
+    private async discoverNetwork(): Promise<void> {
+        if (this.discoveryController || this.isUnloading) {
+            return;
+        }
+        const controller = new AbortController();
+        this.discoveryController = controller;
+        try {
+            await this.setStateAsync('discovery.results', '[]', true);
+            const configuredSubnet = this.normalizeText(this.lightBurnConfig.discoverySubnet);
+            const host = this.normalizeText(this.lightBurnConfig.restHost);
+            const subnet = configuredSubnet || `${host}/24`;
+            const hosts = discoveryHosts(subnet);
+            const port = Number(this.lightBurnConfig.restPort || REST_PORT);
+            if (!Number.isInteger(port) || port < 1 || port > 65535) {
+                throw new Error('REST port must be an integer between 1 and 65535');
+            }
+            await this.setStateAsync('discovery.running', true, true);
+            await this.setStateAsync(
+                'discovery.status',
+                `Scanning ${subnet}, port ${port} (${hosts.length} addresses)...`,
+                true,
+            );
+            const results = await scanNetwork(hosts, port, controller.signal);
+            if (this.isUnloading) {
+                return;
+            }
+            await this.setJsonState('discovery.results', results);
+            const summary = results.length
+                ? results
+                      .map(
+                          result =>
+                              `${result.host}:${result.port} (${result.status === 'lightburn' ? 'LightBurn landing page' : 'unconfirmed HTTP service'})`,
+                      )
+                      .join('; ')
+                : 'No HTTP services found. Check the subnet, firewall and LightBurn network API setting.';
+            await this.setStateAsync('discovery.status', summary, true);
+            this.log.info(`Network discovery: ${summary}`);
+        } catch (error) {
+            if (!this.isUnloading) {
+                await this.setStateAsync('discovery.status', `Scan failed: ${this.getErrorMessage(error)}`, true);
+            }
+        } finally {
+            this.discoveryController = null;
+            if (!this.isUnloading) {
+                await this.setStateAsync('discovery.running', false, true);
+            }
+        }
+    }
+
     private async pairRestApi(): Promise<void> {
         const capabilities: RestCapability[] = ['state', 'project', 'upload'];
         const applicationName = this.normalizeText(this.lightBurnConfig.applicationName) || 'ioBroker.lightburn';
@@ -346,6 +407,7 @@ class LightBurn extends utils.Adapter {
         try {
             const snapshot = await this.restRequest<PollSnapshot>('/api/events/poll');
             await this.applyPollSnapshot(snapshot);
+            await this.setStateAsync('info.lastUpdate', new Date().toISOString(), true);
             await this.setStateAsync('info.apiConnection', true, true);
             await this.setStateAsync('info.lastEndpoint', '/api/events/poll', true);
             await this.setStateAsync('info.lastError', '', true);

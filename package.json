@@ -50,7 +50,8 @@
         "lint": "eslint -c eslint.config.mjs",
         "prettier": "prettier --check .",
         "test:package": "mocha test/package --exit",
-        "test": "npm run build && npm run lint && npm run prettier && npm run test:package"
+        "test": "npm run build && npm run test:discovery && npm run lint && npm run prettier && npm run test:package",
+        "test:discovery": "node --test test/discovery/*.test.js"
     },
     "bugs": {
         "url": "https://github.com/friebe/ioBroker.lightburn/issues"

@@ -1,206 +1,589 @@
 {
     "i18n": false,
-    "type": "panel",
+    "type": "tabs",
     "items": {
-        "restHost": {
-            "type": "text",
-            "label": "LightBurn REST host/IP",
-            "help": "Use 127.0.0.1 if ioBroker runs on the same computer as LightBurn. Enable Settings > Extensions > Allow API Access From Network in LightBurn for remote access.",
-            "default": "127.0.0.1",
-            "newLine": true,
-            "xs": 12,
-            "sm": 12,
-            "md": 6,
-            "lg": 4
+        "_status": {
+            "type": "panel",
+            "label": "Live-Status",
+            "items": {
+                "_title": {
+                    "type": "staticText",
+                    "text": "LightBurn ? Live-Status",
+                    "newLine": true,
+                    "xs": 12,
+                    "style": {
+                        "fontSize": 20,
+                        "fontWeight": 600,
+                        "marginTop": 16
+                    }
+                },
+                "_alive": {
+                    "type": "alive",
+                    "textAlive": "Adapter ist gestartet",
+                    "textNotAlive": "Adapter ist gestoppt",
+                    "xs": 12
+                },
+                "_api": {
+                    "type": "state",
+                    "oid": "info.apiConnection",
+                    "label": "LightBurn-API",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "trueText": "Erreichbar",
+                    "falseText": "Nicht erreichbar",
+                    "trueTextStyle": {
+                        "color": "#2e7d32",
+                        "fontWeight": 600
+                    },
+                    "falseTextStyle": {
+                        "color": "#b45309",
+                        "fontWeight": 600
+                    }
+                },
+                "_connection": {
+                    "type": "state",
+                    "oid": "info.connection",
+                    "label": "Maschinenverbindung",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "trueText": "Verbunden",
+                    "falseText": "Nicht verbunden",
+                    "trueTextStyle": {
+                        "color": "#2e7d32",
+                        "fontWeight": 600
+                    },
+                    "falseTextStyle": {
+                        "color": "#b45309",
+                        "fontWeight": 600
+                    }
+                },
+                "_paired": {
+                    "type": "state",
+                    "oid": "info.apiPaired",
+                    "label": "API-Schl?ssel",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "trueText": "Vorhanden",
+                    "falseText": "Fehlt",
+                    "trueTextStyle": {
+                        "color": "#2e7d32",
+                        "fontWeight": 600
+                    },
+                    "falseTextStyle": {
+                        "color": "#b45309",
+                        "fontWeight": 600
+                    }
+                },
+                "_lastUpdate": {
+                    "type": "state",
+                    "oid": "info.lastUpdate",
+                    "label": "Letzter erfolgreicher Abruf (UTC)",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "newLine": true
+                },
+                "_lastError": {
+                    "type": "state",
+                    "oid": "info.lastError",
+                    "label": "Letzter API-Fehler",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6
+                },
+                "_freshness": {
+                    "type": "staticText",
+                    "text": "Die Werte unten stammen aus dem letzten erfolgreichen Abruf. Bei gestopptem Adapter oder nicht erreichbarer API sind sie veraltet. Eine fehlende Maschinenverbindung kann je nach Controller auch im Leerlauf normal sein.",
+                    "newLine": true,
+                    "xs": 12
+                },
+                "_jobTitle": {
+                    "type": "staticText",
+                    "text": "Auftrag ? zuletzt empfangene Werte",
+                    "newLine": true,
+                    "xs": 12,
+                    "style": {
+                        "fontSize": 20,
+                        "fontWeight": 600,
+                        "marginTop": 16
+                    }
+                },
+                "_device": {
+                    "type": "state",
+                    "oid": "device.name",
+                    "label": "Ger?t",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4
+                },
+                "_jobState": {
+                    "type": "state",
+                    "oid": "job.state",
+                    "label": "Auftragsstatus",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4
+                },
+                "_filename": {
+                    "type": "state",
+                    "oid": "project.filename",
+                    "label": "Ge?ffnete Datei",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4
+                },
+                "_known": {
+                    "type": "state",
+                    "oid": "job.progressKnown",
+                    "label": "Fortschritt verf?gbar",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "trueText": "Ja",
+                    "falseText": "Nein / kein aktiver Auftrag",
+                    "trueTextStyle": {
+                        "color": "#2e7d32",
+                        "fontWeight": 600
+                    },
+                    "falseTextStyle": {
+                        "color": "#b45309",
+                        "fontWeight": 600
+                    }
+                },
+                "_progress": {
+                    "type": "state",
+                    "oid": "job.progressPercent",
+                    "label": "Fortschritt (nur wenn verf?gbar)",
+                    "control": "slider",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 8,
+                    "min": 0,
+                    "max": 100,
+                    "step": 0.1,
+                    "unit": "%"
+                },
+                "_elapsed": {
+                    "type": "state",
+                    "oid": "job.elapsedSeconds",
+                    "label": "Beobachtete Laufzeit",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "unit": "s",
+                    "digits": 0
+                },
+                "_remaining": {
+                    "type": "state",
+                    "oid": "job.remainingSeconds",
+                    "label": "Gesch?tzte Restzeit",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "unit": "s",
+                    "digits": 0
+                },
+                "_total": {
+                    "type": "state",
+                    "oid": "job.estimatedTotalSeconds",
+                    "label": "Gesch?tzte Gesamtdauer",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "unit": "s",
+                    "digits": 0
+                },
+                "_estimate": {
+                    "type": "staticText",
+                    "text": "Restzeit und Gesamtdauer werden aus dem Fortschritt gesch?tzt. 0 bedeutet gegebenenfalls, dass noch keine Sch?tzung vorliegt.",
+                    "newLine": true,
+                    "xs": 12
+                },
+                "_positionTitle": {
+                    "type": "staticText",
+                    "text": "Position und Leistung",
+                    "newLine": true,
+                    "xs": 12,
+                    "style": {
+                        "fontSize": 20,
+                        "fontWeight": 600,
+                        "marginTop": 16
+                    }
+                },
+                "_x": {
+                    "type": "state",
+                    "oid": "position.machine.x",
+                    "label": "Maschine X",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "unit": "mm",
+                    "digits": 2
+                },
+                "_y": {
+                    "type": "state",
+                    "oid": "position.machine.y",
+                    "label": "Maschine Y",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "unit": "mm",
+                    "digits": 2
+                },
+                "_z": {
+                    "type": "state",
+                    "oid": "position.machine.z",
+                    "label": "Maschine Z",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "unit": "mm",
+                    "digits": 2
+                },
+                "_speed": {
+                    "type": "state",
+                    "oid": "overrides.speedPercent",
+                    "label": "Geschwindigkeits-Override",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "unit": "%"
+                },
+                "_power": {
+                    "type": "state",
+                    "oid": "overrides.powerPercent",
+                    "label": "Leistungs-Override",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "unit": "%"
+                },
+                "_refresh": {
+                    "type": "setState",
+                    "label": "Status jetzt aktualisieren",
+                    "id": "lightburn.%INSTANCE%.control.refresh",
+                    "val": true,
+                    "ack": false,
+                    "okText": "Statusabruf angefordert.",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 6
+                },
+                "_refreshProject": {
+                    "type": "setState",
+                    "label": "Projekt jetzt aktualisieren",
+                    "id": "lightburn.%INSTANCE%.control.refreshProject",
+                    "val": true,
+                    "ack": false,
+                    "okText": "Projektabruf angefordert (Projekt-Polling muss aktiviert sein).",
+                    "xs": 12,
+                    "sm": 6
+                }
+            }
         },
-        "restPort": {
-            "type": "number",
-            "label": "REST API port",
-            "help": "LightBurn uses fixed port 19520.",
-            "default": 19520,
-            "min": 1,
-            "max": 65535,
-            "xs": 12,
-            "sm": 6,
-            "md": 3,
-            "lg": 2
+        "_settings": {
+            "type": "panel",
+            "label": "Einstellungen",
+            "items": {
+                "restHost": {
+                    "type": "text",
+                    "label": "LightBurn REST host/IP",
+                    "help": "Use 127.0.0.1 if ioBroker runs on the same computer as LightBurn. Enable Settings > Extensions > Allow API Access From Network in LightBurn for remote access.",
+                    "default": "127.0.0.1",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4
+                },
+                "restPort": {
+                    "type": "number",
+                    "label": "REST API port",
+                    "help": "LightBurn uses fixed port 19520.",
+                    "default": 19520,
+                    "min": 1,
+                    "max": 65535,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 3,
+                    "lg": 2
+                },
+                "applicationName": {
+                    "type": "text",
+                    "label": "Pairing application name",
+                    "default": "ioBroker.lightburn",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4
+                },
+                "restSecret": {
+                    "type": "password",
+                    "label": "REST API secret",
+                    "help": "Use the pairing button below when ioBroker runs on the LightBurn computer, or paste a secret obtained by local pairing.",
+                    "default": "",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4
+                },
+                "pairInfo": {
+                    "type": "staticText",
+                    "text": "Direct pairing works only when this adapter instance runs on the same computer as LightBurn. Click the button and approve the LightBurn dialog within 30 seconds.",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 9,
+                    "lg": 8
+                },
+                "pairButton": {
+                    "type": "setState",
+                    "label": "Pair with LightBurn",
+                    "id": "lightburn.%INSTANCE%.control.pair",
+                    "val": true,
+                    "ack": false,
+                    "okText": "Pairing started. Confirm the LightBurn dialog within 30 seconds.",
+                    "variant": "contained",
+                    "color": "primary",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 3,
+                    "lg": 2
+                },
+                "pairHelperInfo": {
+                    "type": "staticText",
+                    "text": "If ioBroker runs on another computer, download the Windows helper, run it on the LightBurn computer, approve the LightBurn dialog, and paste the copied secret into REST API secret.",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 9,
+                    "lg": 8
+                },
+                "pairHelperDownload": {
+                    "type": "staticLink",
+                    "label": "Download Windows pairing helper",
+                    "href": "/adapter/lightburn/pair-lightburn.cmd",
+                    "target": "_blank",
+                    "button": true,
+                    "variant": "outlined",
+                    "color": "primary",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 3,
+                    "lg": 2
+                },
+                "requestTimeoutMs": {
+                    "type": "number",
+                    "label": "REST request timeout (ms)",
+                    "default": 5000,
+                    "min": 250,
+                    "max": 60000,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 3,
+                    "lg": 2
+                },
+                "pollInterval": {
+                    "type": "number",
+                    "label": "State polling interval (s)",
+                    "help": "Polls /api/events/poll for job progress and position. Set to 0 to disable automatic polling.",
+                    "default": 2,
+                    "min": 0,
+                    "max": 3600,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 3,
+                    "lg": 2
+                },
+                "enableProjectPolling": {
+                    "type": "checkbox",
+                    "label": "Poll project, layers, and cuts",
+                    "default": true,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4
+                },
+                "projectPollInterval": {
+                    "type": "number",
+                    "label": "Project polling interval (s)",
+                    "default": 60,
+                    "min": 0,
+                    "max": 3600,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 3,
+                    "lg": 2
+                },
+                "enableUdpControl": {
+                    "type": "checkbox",
+                    "label": "Enable legacy UDP control commands",
+                    "help": "Required only for START/CLOSE/FORCECLOSE/raw UDP commands. REST monitoring does not need this.",
+                    "default": false,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4
+                },
+                "udpHost": {
+                    "type": "text",
+                    "label": "UDP host/IP",
+                    "help": "Leave empty to use the REST host.",
+                    "default": "",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4
+                },
+                "udpCommandPort": {
+                    "type": "number",
+                    "label": "UDP command port",
+                    "help": "LightBurn default: 19840",
+                    "default": 19840,
+                    "min": 1,
+                    "max": 65535,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 3,
+                    "lg": 2
+                },
+                "udpResponsePort": {
+                    "type": "number",
+                    "label": "UDP response port",
+                    "help": "LightBurn default: 19841",
+                    "default": 19841,
+                    "min": 1,
+                    "max": 65535,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 3,
+                    "lg": 2
+                },
+                "udpBindAddress": {
+                    "type": "text",
+                    "label": "UDP local bind address",
+                    "default": "0.0.0.0",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4
+                },
+                "udpTimeoutMs": {
+                    "type": "number",
+                    "label": "UDP command timeout (ms)",
+                    "default": 2000,
+                    "min": 250,
+                    "max": 60000,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 3,
+                    "lg": 2
+                }
+            }
         },
-        "applicationName": {
-            "type": "text",
-            "label": "Pairing application name",
-            "default": "ioBroker.lightburn",
-            "newLine": true,
-            "xs": 12,
-            "sm": 12,
-            "md": 6,
-            "lg": 4
-        },
-        "restSecret": {
-            "type": "password",
-            "label": "REST API secret",
-            "help": "Use the pairing button below when ioBroker runs on the LightBurn computer, or paste a secret obtained by local pairing.",
-            "default": "",
-            "xs": 12,
-            "sm": 12,
-            "md": 6,
-            "lg": 4
-        },
-        "pairInfo": {
-            "type": "staticText",
-            "text": "Direct pairing works only when this adapter instance runs on the same computer as LightBurn. Click the button and approve the LightBurn dialog within 30 seconds.",
-            "newLine": true,
-            "xs": 12,
-            "sm": 12,
-            "md": 9,
-            "lg": 8
-        },
-        "pairButton": {
-            "type": "setState",
-            "label": "Pair with LightBurn",
-            "id": "lightburn.%INSTANCE%.control.pair",
-            "val": true,
-            "ack": false,
-            "okText": "Pairing started. Confirm the LightBurn dialog within 30 seconds.",
-            "variant": "contained",
-            "color": "primary",
-            "xs": 12,
-            "sm": 6,
-            "md": 3,
-            "lg": 2
-        },
-        "pairHelperInfo": {
-            "type": "staticText",
-            "text": "If ioBroker runs on another computer, download the Windows helper, run it on the LightBurn computer, approve the LightBurn dialog, and paste the copied secret into REST API secret.",
-            "newLine": true,
-            "xs": 12,
-            "sm": 12,
-            "md": 9,
-            "lg": 8
-        },
-        "pairHelperDownload": {
-            "type": "staticLink",
-            "label": "Download Windows pairing helper",
-            "href": "/adapter/lightburn/pair-lightburn.cmd",
-            "target": "_blank",
-            "button": true,
-            "variant": "outlined",
-            "color": "primary",
-            "xs": 12,
-            "sm": 6,
-            "md": 3,
-            "lg": 2
-        },
-        "requestTimeoutMs": {
-            "type": "number",
-            "label": "REST request timeout (ms)",
-            "default": 5000,
-            "min": 250,
-            "max": 60000,
-            "newLine": true,
-            "xs": 12,
-            "sm": 6,
-            "md": 3,
-            "lg": 2
-        },
-        "pollInterval": {
-            "type": "number",
-            "label": "State polling interval (s)",
-            "help": "Polls /api/events/poll for job progress and position. Set to 0 to disable automatic polling.",
-            "default": 2,
-            "min": 0,
-            "max": 3600,
-            "xs": 12,
-            "sm": 6,
-            "md": 3,
-            "lg": 2
-        },
-        "enableProjectPolling": {
-            "type": "checkbox",
-            "label": "Poll project, layers, and cuts",
-            "default": true,
-            "newLine": true,
-            "xs": 12,
-            "sm": 12,
-            "md": 6,
-            "lg": 4
-        },
-        "projectPollInterval": {
-            "type": "number",
-            "label": "Project polling interval (s)",
-            "default": 60,
-            "min": 0,
-            "max": 3600,
-            "xs": 12,
-            "sm": 6,
-            "md": 3,
-            "lg": 2
-        },
-        "enableUdpControl": {
-            "type": "checkbox",
-            "label": "Enable legacy UDP control commands",
-            "help": "Required only for START/CLOSE/FORCECLOSE/raw UDP commands. REST monitoring does not need this.",
-            "default": false,
-            "newLine": true,
-            "xs": 12,
-            "sm": 12,
-            "md": 6,
-            "lg": 4
-        },
-        "udpHost": {
-            "type": "text",
-            "label": "UDP host/IP",
-            "help": "Leave empty to use the REST host.",
-            "default": "",
-            "newLine": true,
-            "xs": 12,
-            "sm": 12,
-            "md": 6,
-            "lg": 4
-        },
-        "udpCommandPort": {
-            "type": "number",
-            "label": "UDP command port",
-            "help": "LightBurn default: 19840",
-            "default": 19840,
-            "min": 1,
-            "max": 65535,
-            "xs": 12,
-            "sm": 6,
-            "md": 3,
-            "lg": 2
-        },
-        "udpResponsePort": {
-            "type": "number",
-            "label": "UDP response port",
-            "help": "LightBurn default: 19841",
-            "default": 19841,
-            "min": 1,
-            "max": 65535,
-            "xs": 12,
-            "sm": 6,
-            "md": 3,
-            "lg": 2
-        },
-        "udpBindAddress": {
-            "type": "text",
-            "label": "UDP local bind address",
-            "default": "0.0.0.0",
-            "newLine": true,
-            "xs": 12,
-            "sm": 12,
-            "md": 6,
-            "lg": 4
-        },
-        "udpTimeoutMs": {
-            "type": "number",
-            "label": "UDP command timeout (ms)",
-            "default": 2000,
-            "min": 250,
-            "max": 60000,
-            "xs": 12,
-            "sm": 6,
-            "md": 3,
-            "lg": 2
+        "_discovery": {
+            "type": "panel",
+            "label": "Netzwerksuche",
+            "items": {
+                "discoverySubnet": {
+                    "type": "text",
+                    "label": "Network scan subnet (IPv4 CIDR)",
+                    "help": "Example: 192.168.23.0/24. Private networks only, /24 to /32. Leave empty to scan the /24 of the configured REST IPv4 address. Save settings before scanning.",
+                    "default": "",
+                    "newLine": true,
+                    "xs": 12,
+                    "md": 6
+                },
+                "scanNetworkButton": {
+                    "type": "setState",
+                    "label": "Search for LightBurn",
+                    "id": "lightburn.%INSTANCE%.control.scanNetwork",
+                    "val": true,
+                    "ack": false,
+                    "okText": "Scan requested. Results appear below; the adapter must be running.",
+                    "xs": 12,
+                    "md": 6
+                },
+                "discoveryStatus": {
+                    "type": "state",
+                    "oid": "discovery.status",
+                    "control": "text",
+                    "readOnly": true,
+                    "label": "Network search results",
+                    "newLine": true,
+                    "xs": 12
+                },
+                "discoveryHelp": {
+                    "type": "staticText",
+                    "text": "Copy a discovered IP into REST host/IP and save. LightBurn landing page means the public page contains the LightBurn name; other HTTP services are unconfirmed. A reachable service does not mean a laser is connected. Pairing may still be required.",
+                    "newLine": true,
+                    "xs": 12
+                },
+                "_running": {
+                    "type": "state",
+                    "oid": "discovery.running",
+                    "label": "Netzwerksuche",
+                    "control": "text",
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "trueText": "L?uft",
+                    "falseText": "Bereit",
+                    "trueTextStyle": {
+                        "color": "#2e7d32",
+                        "fontWeight": 600
+                    },
+                    "falseTextStyle": {
+                        "color": "#b45309",
+                        "fontWeight": 600
+                    }
+                }
+            }
         }
     }
 }
