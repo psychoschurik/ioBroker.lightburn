@@ -1,7 +1,6 @@
 import WidgetGeneric, {
     AdapterReact,
     MuiMaterial,
-    MuiIcons,
     React,
     getTileStyles,
     isNeumorphicTheme,
@@ -16,8 +15,6 @@ import type { ConfigItemPanel as JsonConfigItemPanel } from '@iobroker/json-conf
 const Box: React.ComponentType<BoxProps> = MuiMaterial?.Box;
 const Typography: React.ComponentType<TypographyProps> = MuiMaterial?.Typography;
 const LinearProgress: React.ComponentType<LinearProgressProps> = MuiMaterial?.LinearProgress;
-const Button: React.ComponentType<any> = MuiMaterial?.Button;
-const PauseIcon: React.ComponentType<{ sx?: Record<string, unknown> }> | undefined = MuiIcons?.Pause;
 const I18n = AdapterReact?.I18n as { t?: (word: string) => string } | undefined;
 
 const STATE_MAP = {
@@ -26,6 +23,7 @@ const STATE_MAP = {
     deviceName: 'device.name',
     projectDeviceName: 'project.deviceName',
     progressPercent: 'job.progressPercent',
+    progressKnown: 'job.progressKnown',
     remainingSeconds: 'job.remainingSeconds',
     jobState: 'job.state',
     filename: 'project.filename',
@@ -54,8 +52,12 @@ function valueAsNumber(value: ioBroker.StateValue | undefined): number {
     return Number.isFinite(parsed) ? parsed : 0;
 }
 
-function formatPercent(value: number): string {
-    return `${Math.round(Math.min(Math.max(value, 0), 100))}%`;
+function formatPercent(value: number, known = true): string {
+    if (!known) {
+        return '--';
+    }
+
+    return `${Math.floor(Math.min(Math.max(value, 0), 100))}%`;
 }
 
 function formatDuration(totalSeconds: number): string {
@@ -192,7 +194,15 @@ export class LightBurnStatusComponent extends WidgetGeneric<LightBurnStatusState
         return Math.min(Math.max(valueAsNumber(this.state.values.progressPercent), 0), 100);
     }
 
+    private get progressKnown(): boolean {
+        return this.state.values.progressKnown === true;
+    }
+
     private get remaining(): string {
+        if (!this.connected || !this.progressKnown) {
+            return '--:--';
+        }
+
         return formatDuration(valueAsNumber(this.state.values.remainingSeconds));
     }
 
@@ -227,22 +237,8 @@ export class LightBurnStatusComponent extends WidgetGeneric<LightBurnStatusState
         return t(key) === key ? this.jobState : t(key);
     }
 
-    private get canPause(): boolean {
-        return this.connected && this.jobState === 'running';
-    }
-
     protected override isTileActive(): boolean {
         return this.connected && (this.jobState === 'running' || this.jobState === 'paused');
-    }
-
-    private pauseJob(event: { stopPropagation: () => void }): void {
-        event.stopPropagation();
-
-        if (!this.canPause) {
-            return;
-        }
-
-        void this.props.stateContext.getSocket().setState(`${this.instance}.control.pause`, true, false);
     }
 
     private renderProgress(height = 6): React.JSX.Element {
@@ -339,56 +335,6 @@ export class LightBurnStatusComponent extends WidgetGeneric<LightBurnStatusState
         );
     }
 
-    private renderPauseButton(compact = false): React.JSX.Element {
-        const disabled = !this.canPause;
-
-        return (
-            <Button
-                type="button"
-                disabled={disabled}
-                title={t('lightburndm_pause')}
-                onClick={(event: { stopPropagation: () => void }) => this.pauseJob(event)}
-                startIcon={compact || !PauseIcon ? undefined : <PauseIcon sx={{ fontSize: 17 }} />}
-                sx={{
-                    boxSizing: 'border-box',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: compact ? 0 : 0.5,
-                    minWidth: compact ? 30 : 82,
-                    height: compact ? 30 : 32,
-                    px: compact ? 0 : 1,
-                    borderRadius: compact ? '50%' : '16px',
-                    color: disabled ? 'text.disabled' : '#fff',
-                    backgroundColor: disabled ? 'rgba(127,127,127,0.16)' : this.getAccentColor() || '#f45f42',
-                    cursor: disabled ? 'default' : 'pointer',
-                    fontSize: '0.78rem',
-                    fontWeight: 700,
-                    lineHeight: 1,
-                    opacity: disabled ? 0.65 : 1,
-                    textTransform: 'none',
-                    transition: 'background-color 0.15s ease, opacity 0.15s ease',
-                    '& .MuiButton-startIcon': {
-                        mr: 0.5,
-                        ml: 0,
-                    },
-                    '&:hover': disabled
-                        ? {}
-                        : {
-                              filter: 'brightness(0.95)',
-                          },
-                    '&:focus-visible': {
-                        outline: '2px solid currentColor',
-                        outlineOffset: '2px',
-                    },
-                }}
-            >
-                {compact && PauseIcon ? <PauseIcon sx={{ fontSize: 18 }} /> : null}
-                {compact ? null : t('lightburndm_pause')}
-            </Button>
-        );
-    }
-
     override renderCompact(): React.JSX.Element {
         const body = (
             <Box
@@ -409,7 +355,6 @@ export class LightBurnStatusComponent extends WidgetGeneric<LightBurnStatusState
                     >
                         {this.deviceName}
                     </Typography>
-                    {this.renderPauseButton(true)}
                 </Box>
                 <Box sx={{ alignSelf: 'center', minWidth: 0 }}>
                     <Typography
@@ -421,7 +366,7 @@ export class LightBurnStatusComponent extends WidgetGeneric<LightBurnStatusState
                             color: this.isTileActive() ? this.getAccentColor() || '#f45f42' : 'text.primary',
                         }}
                     >
-                        {formatPercent(this.progress)}
+                        {formatPercent(this.progress, this.progressKnown)}
                     </Typography>
                     <Typography
                         variant="caption"
@@ -464,7 +409,7 @@ export class LightBurnStatusComponent extends WidgetGeneric<LightBurnStatusState
                             color: this.isTileActive() ? this.getAccentColor() || '#f45f42' : 'text.primary',
                         }}
                     >
-                        {formatPercent(this.progress)}
+                        {formatPercent(this.progress, this.progressKnown)}
                     </Typography>
                     <Typography
                         variant="caption"
@@ -473,7 +418,6 @@ export class LightBurnStatusComponent extends WidgetGeneric<LightBurnStatusState
                     >
                         {this.stateLabel}
                     </Typography>
-                    <Box sx={{ mt: 0.75 }}>{this.renderPauseButton(false)}</Box>
                 </Box>
                 <Box sx={{ minWidth: 0, display: 'grid', gap: 0.45 }}>
                     {this.renderMetaRow(t('lightburndm_device_name'), this.deviceName, true)}
@@ -500,9 +444,8 @@ export class LightBurnStatusComponent extends WidgetGeneric<LightBurnStatusState
                     gap: 1,
                 })}
             >
-                <Box sx={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) auto', gap: 1, alignItems: 'start' }}>
+                <Box sx={{ minWidth: 0 }}>
                     {this.renderMetaRow(t('lightburndm_device_name'), this.deviceName, true)}
-                    {this.renderPauseButton(false)}
                 </Box>
                 <Box>
                     <Box sx={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 1 }}>
@@ -515,7 +458,7 @@ export class LightBurnStatusComponent extends WidgetGeneric<LightBurnStatusState
                                 color: this.isTileActive() ? this.getAccentColor() || '#f45f42' : 'text.primary',
                             }}
                         >
-                            {formatPercent(this.progress)}
+                            {formatPercent(this.progress, this.progressKnown)}
                         </Typography>
                         <Typography
                             variant="caption"
@@ -528,7 +471,7 @@ export class LightBurnStatusComponent extends WidgetGeneric<LightBurnStatusState
                     {this.renderProgress(7)}
                 </Box>
                 <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
-                    {this.renderMetaRow(t('lightburndm_progress'), formatPercent(this.progress))}
+                    {this.renderMetaRow(t('lightburndm_progress'), formatPercent(this.progress, this.progressKnown))}
                     {this.renderMetaRow(t('lightburndm_remaining'), this.remaining)}
                 </Box>
                 {this.renderMetaRow(t('lightburndm_file'), this.filename, true)}

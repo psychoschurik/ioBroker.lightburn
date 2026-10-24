@@ -1,6 +1,6 @@
 {
     "name": "iobroker.lightburn",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "ioBroker adapter for LightBurn REST API monitoring and automation",
     "author": {
         "name": "Friebe"

@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "lightburn",
-        "version": "0.0.7",
+        "version": "0.0.8",
         "news": {
+            "0.0.8": {
+                "en": "Improved job progress and runtime estimation and removed the non-functional pause control from the widget",
+                "de": "Job-Fortschritt und Laufzeit-Schaetzung verbessert und die nicht funktionierende Pause-Steuerung aus dem Widget entfernt",
+                "ru": "Improved job progress and runtime estimation and removed the non-functional pause control from the widget",
+                "pt": "Improved job progress and runtime estimation and removed the non-functional pause control from the widget",
+                "nl": "Improved job progress and runtime estimation and removed the non-functional pause control from the widget",
+                "fr": "Improved job progress and runtime estimation and removed the non-functional pause control from the widget",
+                "it": "Improved job progress and runtime estimation and removed the non-functional pause control from the widget",
+                "es": "Improved job progress and runtime estimation and removed the non-functional pause control from the widget",
+                "pl": "Improved job progress and runtime estimation and removed the non-functional pause control from the widget",
+                "uk": "Improved job progress and runtime estimation and removed the non-functional pause control from the widget",
+                "zh-cn": "Improved job progress and runtime estimation and removed the non-functional pause control from the widget"
+            },
             "0.0.7": {
                 "en": "Refreshed the adapter icon with a modern laser progress-ring logo",
                 "de": "Adapter-Icon mit modernem Laser-Fortschrittsring-Logo erneuert",
@@ -409,7 +422,7 @@
             "_id": "control.pause",
             "type": "state",
             "common": {
-                "name": "Pause current job (legacy UDP)",
+                "name": "Pause current job (not supported by LightBurn REST or UDP)",
                 "type": "boolean",
                 "role": "button",
                 "read": true,
@@ -522,6 +535,35 @@
                 "read": true,
                 "write": false,
                 "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "job.progressRawPercent",
+            "type": "state",
+            "common": {
+                "name": "Raw REST job progress",
+                "type": "number",
+                "role": "value.progress",
+                "unit": "%",
+                "min": 0,
+                "max": 100,
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "job.progressKnown",
+            "type": "state",
+            "common": {
+                "name": "Job progress is known",
+                "type": "boolean",
+                "role": "indicator",
+                "read": true,
+                "write": false,
+                "def": false
             },
             "native": {}
         },

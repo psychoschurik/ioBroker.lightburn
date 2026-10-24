@@ -37,11 +37,11 @@ const __mfImport = (src) =>
 
 
 (async () => {
-  const __mfHostInit = await __mfImport("./hostInit-XtOGvJjX.js");
+  const __mfHostInit = await __mfImport("./hostInit-BLRwAHqG.js");
   await __mfHostInit.__tla;
   const { initHost } = __mfHostInit;
   await initHost();
-  const __mfPendingShares = await __mfImport("./pendingShares-DX7NAQHu.js").catch(() => undefined);
+  const __mfPendingShares = await __mfImport("./pendingShares-Da3Tz8gU.js").catch(() => undefined);
   if (__mfPendingShares && typeof __mfPendingShares.preloadPendingShares === "function") await __mfPendingShares.preloadPendingShares();
   if (__mfModuleCache.pendingShareLoads) {
     await Promise.all(__mfModuleCache.pendingShareLoads);

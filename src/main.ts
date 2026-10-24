@@ -56,7 +56,7 @@ interface ConnectionStatus {
 
 interface JobState {
     state?: JobStateValue;
-    progress?: number;
+    progress?: unknown;
 }
 
 interface AxisPosition {
@@ -124,6 +124,12 @@ class LightBurn extends utils.Adapter {
     private isUnloading = false;
     private restSecret = '';
     private jobStartedAtMs: number | null = null;
+    private jobAccumulatedRunningMs = 0;
+    private jobLastRunningAtMs: number | null = null;
+    private lastProgressPercent: number | null = null;
+    private lastProgressSamplePercent: number | null = null;
+    private lastProgressSampleRunningMs: number | null = null;
+    private progressSecondsPerPercent: number | null = null;
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
@@ -245,7 +251,10 @@ class LightBurn extends utils.Adapter {
 
                 case 'control.pause':
                     if (state.val === true) {
-                        await this.executeUdpControlCommand(stateId, 'PAUSE');
+                        await this.rejectUnsupportedControl(
+                            stateId,
+                            'LightBurn does not expose pause through the REST API or UDP command interface. Use LightBurn or the machine controller to pause the job.',
+                        );
                     }
                     break;
 
@@ -410,28 +419,45 @@ class LightBurn extends utils.Adapter {
 
     private async applyJobState(job: JobState): Promise<void> {
         const state = job.state ?? 'idle';
-        const progress = this.clampNumber(job.progress ?? 0, 0, 100);
+        const progress = this.normalizeProgress(job.progress);
+        const displayProgress = progress ?? 0;
         const active = state === 'running' || state === 'paused';
+        const progressKnown = active && progress !== null;
         const now = Date.now();
 
-        if (active && this.jobStartedAtMs === null) {
-            this.jobStartedAtMs = now;
-        }
-
         if (!active) {
-            this.jobStartedAtMs = null;
+            this.resetJobTiming();
+        } else {
+            const progressReset =
+                this.lastProgressPercent !== null && progress !== null && progress + 5 < this.lastProgressPercent;
+
+            if (this.jobStartedAtMs === null || progressReset) {
+                this.startJobTiming(now);
+            }
+
+            if (state === 'running') {
+                if (this.jobLastRunningAtMs !== null) {
+                    this.jobAccumulatedRunningMs += now - this.jobLastRunningAtMs;
+                }
+
+                this.jobLastRunningAtMs = now;
+            } else {
+                this.jobLastRunningAtMs = null;
+            }
         }
 
-        const elapsedSeconds = this.jobStartedAtMs ? Math.max(0, Math.floor((now - this.jobStartedAtMs) / 1000)) : 0;
-        const estimatedTotalSeconds = active && progress > 0 ? Math.round(elapsedSeconds / (progress / 100)) : 0;
-        const remainingSeconds =
-            active && estimatedTotalSeconds > elapsedSeconds ? estimatedTotalSeconds - elapsedSeconds : 0;
+        const elapsedSeconds = Math.max(0, Math.floor(this.jobAccumulatedRunningMs / 1000));
+        const remainingSeconds = this.calculateRemainingSeconds(active, progress, elapsedSeconds);
+        const estimatedTotalSeconds =
+            remainingSeconds > 0 || (active && progress === 100) ? elapsedSeconds + remainingSeconds : 0;
 
         await this.setStateAsync('job.state', state, true);
         await this.setStateAsync('job.running', state === 'running', true);
         await this.setStateAsync('job.paused', state === 'paused', true);
         await this.setStateAsync('info.busy', active, true);
-        await this.setNumberState('job.progressPercent', progress);
+        await this.setNumberState('job.progressPercent', displayProgress);
+        await this.setNumberState('job.progressRawPercent', progress ?? 0);
+        await this.setStateAsync('job.progressKnown', progressKnown, true);
         await this.setStateAsync(
             'job.startedAt',
             this.jobStartedAtMs ? new Date(this.jobStartedAtMs).toISOString() : '',
@@ -440,6 +466,8 @@ class LightBurn extends utils.Adapter {
         await this.setNumberState('job.elapsedSeconds', elapsedSeconds);
         await this.setNumberState('job.estimatedTotalSeconds', estimatedTotalSeconds);
         await this.setNumberState('job.remainingSeconds', remainingSeconds);
+
+        this.lastProgressPercent = progress;
     }
 
     private async applyProjectSnapshot(project: ProjectSnapshot): Promise<void> {
@@ -754,6 +782,12 @@ class LightBurn extends utils.Adapter {
         this.log.info(`LightBurn UDP command ${command} returned ${response}`);
     }
 
+    private async rejectUnsupportedControl(stateId: string, message: string): Promise<void> {
+        await this.setStateAsync(stateId, false, true);
+        await this.setStateAsync('info.lastError', message, true);
+        this.log.warn(message);
+    }
+
     private async executeRawUdpCommand(stateId: string, value: ioBroker.StateValue | undefined): Promise<void> {
         const command = this.normalizeText(value);
 
@@ -856,6 +890,90 @@ class LightBurn extends utils.Adapter {
         }
 
         return timeout;
+    }
+
+    private normalizeProgress(value: unknown): number | null {
+        if (value === null || value === undefined || value === '') {
+            return null;
+        }
+
+        const progress = Number(value);
+
+        if (!Number.isFinite(progress)) {
+            return null;
+        }
+
+        return this.clampNumber(progress, 0, 100);
+    }
+
+    private resetJobTiming(): void {
+        this.jobStartedAtMs = null;
+        this.jobAccumulatedRunningMs = 0;
+        this.jobLastRunningAtMs = null;
+        this.lastProgressPercent = null;
+        this.resetProgressRate();
+    }
+
+    private startJobTiming(now: number): void {
+        this.jobStartedAtMs = now;
+        this.jobAccumulatedRunningMs = 0;
+        this.jobLastRunningAtMs = null;
+        this.resetProgressRate();
+    }
+
+    private calculateRemainingSeconds(active: boolean, progress: number | null, elapsedSeconds: number): number {
+        if (!active || progress === null) {
+            this.resetProgressRate();
+            return 0;
+        }
+
+        if (progress >= 100) {
+            return 0;
+        }
+
+        if (this.lastProgressSamplePercent === null || this.lastProgressSampleRunningMs === null) {
+            this.recordProgressSample(progress);
+            return 0;
+        }
+
+        if (progress < this.lastProgressSamplePercent) {
+            this.resetProgressRate();
+            this.recordProgressSample(progress);
+            return 0;
+        }
+
+        const deltaProgress = progress - this.lastProgressSamplePercent;
+        const deltaMs = this.jobAccumulatedRunningMs - this.lastProgressSampleRunningMs;
+
+        if (deltaProgress >= 0.05 && deltaMs > 0) {
+            const sampleSecondsPerPercent = deltaMs / 1000 / deltaProgress;
+
+            if (Number.isFinite(sampleSecondsPerPercent) && sampleSecondsPerPercent > 0) {
+                this.progressSecondsPerPercent =
+                    this.progressSecondsPerPercent === null
+                        ? sampleSecondsPerPercent
+                        : this.progressSecondsPerPercent * 0.75 + sampleSecondsPerPercent * 0.25;
+            }
+
+            this.recordProgressSample(progress);
+        }
+
+        if (this.progressSecondsPerPercent === null || elapsedSeconds <= 0) {
+            return 0;
+        }
+
+        return Math.max(0, Math.round((100 - progress) * this.progressSecondsPerPercent));
+    }
+
+    private recordProgressSample(progress: number): void {
+        this.lastProgressSamplePercent = progress;
+        this.lastProgressSampleRunningMs = this.jobAccumulatedRunningMs;
+    }
+
+    private resetProgressRate(): void {
+        this.lastProgressSamplePercent = null;
+        this.lastProgressSampleRunningMs = null;
+        this.progressSecondsPerPercent = null;
     }
 
     private clampNumber(value: number, min: number, max: number): number {

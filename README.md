@@ -66,7 +66,7 @@ the returned secret, and copies it to the clipboard.
 - `Poll project, layers, and cuts`: also polls `/api/project`, `/api/layers`,
   and `/api/cuts`.
 - `Project polling interval`: slower polling interval for project data.
-- `Enable legacy UDP control commands`: enables `START`, `PAUSE`, `CLOSE`,
+- `Enable legacy UDP control commands`: enables `START`, `CLOSE`,
   `FORCECLOSE`, and raw UDP commands. Leave disabled unless you explicitly need
   these actions.
 
@@ -86,6 +86,9 @@ the returned secret, and copies it to the clipboard.
 - `job.running`: true when the job is running.
 - `job.paused`: true when the job is paused.
 - `job.progressPercent`: REST-reported progress from 0 to 100.
+- `job.progressRawPercent`: raw REST progress value from 0 to 100.
+- `job.progressKnown`: false when LightBurn does not expose progress for the
+  current job/controller.
 - `job.startedAt`: adapter-observed start timestamp.
 - `job.elapsedSeconds`: elapsed time observed by the adapter.
 - `job.estimatedTotalSeconds`: estimated total runtime from elapsed time and
@@ -93,7 +96,10 @@ the returned secret, and copies it to the clipboard.
 - `job.remainingSeconds`: estimated remaining time.
 
 LightBurn REST provides progress directly. Remaining time is calculated by the
-adapter from progress and observed elapsed time.
+adapter from progress and observed running time. It is an estimate and can
+differ from LightBurn's own UI because the public REST API does not expose
+LightBurn's internal remaining-time calculation. The estimate stays empty until
+the adapter has seen progress change over time.
 
 ### Position and machine states
 
@@ -132,10 +138,6 @@ The widget shows:
 - `job.remainingSeconds`: estimated remaining runtime
 - `project.filename`: currently opened LightBurn file
 
-The Pause button writes `true` to `control.pause`. Like `control.start`, this
-uses LightBurn's legacy UDP command interface and requires
-`Enable legacy UDP control commands`.
-
 ### Upload states
 
 - `control.uploadFile`: write a local file path to import that file into the
@@ -153,19 +155,24 @@ The file path must be readable by the ioBroker host.
 These require `Enable legacy UDP control commands`.
 
 - `control.start`: sends UDP `START`.
-- `control.pause`: sends UDP `PAUSE`.
 - `control.close`: sends UDP `CLOSE`.
 - `control.forceClose`: sends UDP `FORCECLOSE`.
 - `control.udpCommand`: sends a raw UDP command line.
 - `info.lastUdpCommand`
 - `info.lastUdpResponse`
 
+### Unsupported controls
+
+- `control.pause`: LightBurn currently exposes no documented REST endpoint or
+  UDP command for pause/resume. Writes are reset and a message is written to
+  `info.lastError`.
+
 ## What the REST API does not provide
 
 The current public REST API does not expose camera images, LightBurn's visual
-preview, or direct start/stop job control. Camera streams must be exposed
-separately, for example by using an IP camera or an MJPEG/RTSP bridge for a USB
-camera.
+preview, LightBurn's own remaining-time estimate, or direct start/stop/pause job
+control. Camera streams must be exposed separately, for example by using an IP
+camera or an MJPEG/RTSP bridge for a USB camera.
 
 ## Safety
 

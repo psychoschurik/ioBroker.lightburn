@@ -138,7 +138,7 @@
         "enableUdpControl": {
             "type": "checkbox",
             "label": "Enable legacy UDP control commands",
-            "help": "Required only for START/PAUSE/CLOSE/FORCECLOSE/raw UDP commands. REST monitoring does not need this.",
+            "help": "Required only for START/CLOSE/FORCECLOSE/raw UDP commands. REST monitoring does not need this.",
             "default": false,
             "newLine": true,
             "xs": 12,
